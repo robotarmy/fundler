@@ -1,22 +1,22 @@
 #!/usr/bin/env ruby
 
-# Check if an older version of bundler is installed
-require 'bundler'
+# Check if an older version of fundler is installed
+require 'fundler'
 $:.each do |path|
-  if path =~ %r'/bundler-0.(\d+)' && $1.to_i < 9
-    abort "Please remove older versions of bundler. This can be done by running `gem cleanup bundler`."
+  if path =~ %r'/fundler-0.(\d+)' && $1.to_i < 9
+    abort "Please remove older versions of fundler. This can be done by running `gem cleanup fundler`."
   end
 end
-require 'bundler/cli'
+require 'fundler/cli'
 
 begin
-  Bundler::CLI.start
-rescue Bundler::BundlerError => e
-  Bundler.ui.error e.message
-  Bundler.ui.debug e.backtrace.join("\n")
+  Fundler::CLI.start
+rescue Fundler::FundlerError => e
+  Fundler.ui.error e.message
+  Fundler.ui.debug e.backtrace.join("\n")
   exit e.status_code
 rescue Interrupt => e
-  Bundler.ui.error "\nQuitting..."
-  Bundler.ui.debug e.backtrace.join("\n")
+  Fundler.ui.error "\nQuitting..."
+  Fundler.ui.debug e.backtrace.join("\n")
   exit 1
 end

@@ -3,7 +3,7 @@ class Gem::Platform
 end
 
 if ENV['BUNDLER_SPEC_VERSION']
-  module Bundler
+  module Fundler
     VERSION = ENV['BUNDLER_SPEC_VERSION'].dup
   end
 end

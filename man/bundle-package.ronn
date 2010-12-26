@@ -13,14 +13,14 @@ use the gems in the cache in preference to the ones on `rubygems.org`.
 
 ## GIT AND PATH GEMS
 
-In Bundler 1.0, the `bundle package` command only packages `.gem` files,
+In Fundler 1.0, the `bundle package` command only packages `.gem` files,
 not gems specified using the `:git` or `:path` options. This will likely
 change in the future.
 
 ## REMOTE FETCHING
 
 By default, if you simply run [bundle install(1)][bundle-install] after running
-[bundle package(1)][bundle-package], bundler will still connect to `rubygems.org`
+[bundle package(1)][bundle-package], fundler will still connect to `rubygems.org`
 to check whether a platform-specific gem exists for any of the gems
 in `vendor/cache`.
 
@@ -30,14 +30,14 @@ For instance, consider this Gemfile(5):
 
     gem "nokogiri"
 
-If you run `bundle package` under C Ruby, bundler will retrieve
+If you run `bundle package` under C Ruby, fundler will retrieve
 the version of `nokogiri` for the `"ruby"` platform. If you deploy
-to JRuby and run `bundle install`, bundler is forced to check to
+to JRuby and run `bundle install`, fundler is forced to check to
 see whether a `"java"` platformed `nokogiri` exists.
 
 Even though the `nokogiri` gem for the Ruby platform is
 _technically_ acceptable on JRuby, it actually has a C extension
-that does not run on JRuby. As a result, bundler will, by default,
+that does not run on JRuby. As a result, fundler will, by default,
 still connect to `rubygems.org` to check whether it has a version
 of one of your gems more specific to your platform.
 

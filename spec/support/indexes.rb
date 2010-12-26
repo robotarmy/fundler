@@ -2,7 +2,7 @@ module Spec
   module Indexes
     def dep(name, reqs = nil)
       @deps ||= []
-      @deps << Bundler::Dependency.new(name, :version => reqs)
+      @deps << Fundler::Dependency.new(name, :version => reqs)
     end
 
     def platform(*args)
@@ -17,10 +17,10 @@ module Spec
       deps = []
       @deps.each do |d|
         @platforms.each do |p|
-          deps << Bundler::DepProxy.new(d, p)
+          deps << Fundler::DepProxy.new(d, p)
         end
       end
-      Bundler::Resolver.resolve(deps, @index)
+      Fundler::Resolver.resolve(deps, @index)
     end
 
     def should_resolve_as(specs)
@@ -33,7 +33,7 @@ module Spec
       begin
         got = resolve
         flunk "The resolve succeeded with: #{got.map { |s| s.full_name }.sort.inspect}"
-      rescue Bundler::VersionConflict => e
+      rescue Fundler::VersionConflict => e
         Array(names).sort.should == e.conflicts.sort
       end
     end

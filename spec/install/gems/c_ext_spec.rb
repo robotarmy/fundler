@@ -42,7 +42,7 @@ describe "installing a gem with C extensions" do
 
     out.should_not include("extconf.rb failed")
 
-    run "Bundler.require; puts CExtension.new.its_true"
+    run "Fundler.require; puts CExtension.new.its_true"
     out.should == "true"
   end
 end

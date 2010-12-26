@@ -153,15 +153,15 @@ module Spec
           s.add_c_extension
         end
 
-        build_gem "bundler", "0.9" do |s|
+        build_gem "fundler", "0.9" do |s|
           s.executables = "bundle"
           s.write "bin/bundle", "puts 'FAIL'"
         end
 
-        # The bundler 0.8 gem has a rubygems plugin that always loads :(
-        build_gem "bundler", "0.8.1" do |s|
-          s.write "lib/bundler/omg.rb", ""
-          s.write "lib/rubygems_plugin.rb", "require 'bundler/omg' ; puts 'FAIL'"
+        # The fundler 0.8 gem has a rubygems plugin that always loads :(
+        build_gem "fundler", "0.8.1" do |s|
+          s.write "lib/fundler/omg.rb", ""
+          s.write "lib/rubygems_plugin.rb", "require 'fundler/omg' ; puts 'FAIL'"
         end
 
         # The yard gem iterates over Gem.source_index looking for plugins
@@ -265,7 +265,7 @@ module Spec
     end
 
     def build_index(&block)
-      index = Bundler::Index.new
+      index = Fundler::Index.new
       IndexBuilder.run(index, &block) if block_given?
       index
     end
@@ -282,7 +282,7 @@ module Spec
     end
 
     def build_dep(name, requirements = Gem::Requirement.default, type = :runtime)
-      Bundler::Dependency.new(name, :version => requirements)
+      Fundler::Dependency.new(name, :version => requirements)
     end
 
     def build_lib(name, *args, &blk)

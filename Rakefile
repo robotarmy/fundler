@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 $:.unshift File.expand_path("../lib", __FILE__)
-require 'bundler/gem_helper'
-Bundler::GemHelper.install_tasks
+require 'fundler/gem_helper'
+Fundler::GemHelper.install_tasks
 
 def sudo?
   ENV['BUNDLER_SUDO_TESTS']
@@ -122,13 +122,13 @@ rescue LoadError
 end
 
 namespace :man do
-  directory "lib/bundler/man"
+  directory "lib/fundler/man"
 
   Dir["man/*.ronn"].each do |ronn|
     basename = File.basename(ronn, ".ronn")
-    roff = "lib/bundler/man/#{basename}"
+    roff = "lib/fundler/man/#{basename}"
 
-    file roff => ["lib/bundler/man", ronn] do
+    file roff => ["lib/fundler/man", ronn] do
       sh "ronn --roff --pipe #{ronn} > #{roff}"
     end
 
@@ -144,21 +144,21 @@ namespace :man do
 
   desc "Clean up from the built man pages"
   task :clean do
-    rm_rf "lib/bundler/man"
+    rm_rf "lib/fundler/man"
   end
 end
 
 namespace :vendor do
   desc "Build the vendor dir"
   task :build => :clean do
-    sh "git clone git://github.com/wycats/thor.git lib/bundler/vendor/tmp"
-    sh "mv lib/bundler/vendor/tmp/lib/* lib/bundler/vendor/"
-    rm_rf "lib/bundler/vendor/tmp"
+    sh "git clone git://github.com/wycats/thor.git lib/fundler/vendor/tmp"
+    sh "mv lib/fundler/vendor/tmp/lib/* lib/fundler/vendor/"
+    rm_rf "lib/fundler/vendor/tmp"
   end
 
   desc "Clean the vendor dir"
   task :clean do
-    rm_rf "lib/bundler/vendor"
+    rm_rf "lib/fundler/vendor"
   end
 end
 

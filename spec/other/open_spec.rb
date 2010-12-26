@@ -9,8 +9,8 @@ describe "bundle open" do
   end
 
   it "opens the gem with BUNDLER_EDITOR as highest priority" do
-    bundle "open rails", :env => {"EDITOR" => "echo editor", "VISUAL" => "echo visual", "BUNDLER_EDITOR" => "echo bundler_editor"}
-    out.should == "bundler_editor #{default_bundle_path('gems', 'rails-2.3.2')}"
+    bundle "open rails", :env => {"EDITOR" => "echo editor", "VISUAL" => "echo visual", "BUNDLER_EDITOR" => "echo fundler_editor"}
+    out.should == "fundler_editor #{default_bundle_path('gems', 'rails-2.3.2')}"
   end
 
   it "opens the gem with VISUAL as 2nd highest priority" do

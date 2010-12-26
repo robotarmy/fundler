@@ -46,7 +46,7 @@ describe "bundle install with explicit source paths" do
     should_be_installed("foo 1.0")
   end
 
-  it "expands paths relative to Bundler.root" do
+  it "expands paths relative to Fundler.root" do
     build_lib "foo", :path => bundled_app("foo-1.0")
 
     install_gemfile <<-G

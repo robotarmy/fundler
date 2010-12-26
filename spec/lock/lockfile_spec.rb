@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe "the lockfile format" do
-  include Bundler::GemHelpers
+  include Fundler::GemHelpers
 
   it "generates a simple lockfile for a single source, gem" do
     install_gemfile <<-G

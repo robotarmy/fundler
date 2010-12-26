@@ -48,11 +48,11 @@ describe "The library itself" do
 
   it "can still be built" do
     Dir.chdir(root) do
-      `gem build bundler.gemspec`
+      `gem build fundler.gemspec`
       $?.should == 0
 
       # clean up the .gem generated
-      system("rm bundler-#{Bundler::VERSION}.gem")
+      system("rm fundler-#{Fundler::VERSION}.gem")
     end
   end
 end

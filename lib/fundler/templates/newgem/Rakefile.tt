@@ -1,0 +1,2 @@
+require 'fundler'
+Fundler::GemHelper.install_tasks

@@ -24,7 +24,7 @@ gem.
 
 ## UPDATING ALL GEMS
 
-If you run `bundle update` with no parameters, bundler will ignore
+If you run `bundle update` with no parameters, fundler will ignore
 any previously installed gems and resolve all dependencies again
 based on the latest versions of all gems available in the sources.
 
@@ -35,7 +35,7 @@ Consider the following Gemfile(5):
     gem "rails", "3.0.0.rc"
     gem "nokogiri"
 
-When you run [bundle install(1)][bundle-install] the first time, bundler will resolve
+When you run [bundle install(1)][bundle-install] the first time, fundler will resolve
 all of the dependencies, all the way down, and install what you need:
 
     Fetching source index for http://rubygems.org/
@@ -59,7 +59,7 @@ all of the dependencies, all the way down, and install what you need:
     Installing arel (0.4.0)
     Installing activerecord (3.0.0.rc)
     Installing activeresource (3.0.0.rc)
-    Installing bundler (1.0.0.rc.3)
+    Installing fundler (1.0.0.rc.3)
     Installing nokogiri (1.4.3.1) with native extensions
     Installing thor (0.14.0)
     Installing railties (3.0.0.rc)
@@ -68,8 +68,8 @@ all of the dependencies, all the way down, and install what you need:
     Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
 
 As you can see, even though you have just two gems in the Gemfile(5), your application
-actually needs 25 different gems in order to run. Bundler remembers the exact versions
-it installed in `Gemfile.lock`. The next time you run [bundle install(1)][bundle-install], bundler skips
+actually needs 25 different gems in order to run. Fundler remembers the exact versions
+it installed in `Gemfile.lock`. The next time you run [bundle install(1)][bundle-install], fundler skips
 the dependency resolution and installs the same gems as it installed last time.
 
 After checking in the `Gemfile.lock` into version control and cloning it on another
@@ -94,7 +94,7 @@ For instance, in the scenario above, imagine that `nokogiri` releases version `1
 you want to update it _without_ updating Rails and all of its dependencies. To do this,
 run `bundle update nokogiri`.
 
-Bundler will update `nokogiri` and any of its dependencies, but leave alone Rails and
+Fundler will update `nokogiri` and any of its dependencies, but leave alone Rails and
 its dependencies.
 
 ## OVERLAPPING DEPENDENCIES
@@ -119,16 +119,16 @@ on `rack ~> 1.0`. If you run bundle install, you get:
     Installing rack (1.2.1)
     Installing rack-perftools_profiler (0.0.2)
     Installing thin (1.2.7) with native extensions
-    Using bundler (1.0.0.rc.3)
+    Using fundler (1.0.0.rc.3)
 
 In this case, the two gems have their own set of dependencies, but they share
-`rack` in common. If you run `bundle update thin`, bundler will update `daemons`,
+`rack` in common. If you run `bundle update thin`, fundler will update `daemons`,
 `eventmachine` and `rack`, which are dependencies of `thin`, but not `open4` or
 `perftools.rb`, which are dependencies of `rack-perftools_profiler`. Note that
 `bundle update thin` will update `rack` even though it's _also_ a dependency of
 `rack-perftools_profiler`.
 
-`In short`, when you update a gem using `bundle update`, bundler will update all
+`In short`, when you update a gem using `bundle update`, fundler will update all
 dependencies of that gem, including those that are also dependencies of another gem.
 
 In this scenario, updating the `thin` version manually in the Gemfile(5),
@@ -138,7 +138,7 @@ of [bundle install(1)][bundle-install].
 
 ## RECOMMENDED WORKFLOW
 
-In general, when working with an application managed with bundler, you should
+In general, when working with an application managed with fundler, you should
 use the following workflow:
 
 * After you create your Gemfile(5) for the first time, run

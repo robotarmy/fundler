@@ -1,12 +1,12 @@
 require "spec_helper"
-require 'bundler/gem_helper'
+require 'fundler/gem_helper'
 
-describe "Bundler::GemHelper tasks" do
+describe "Fundler::GemHelper tasks" do
   context "determining gemspec" do
     it "interpolates the name when there is only one gemspec" do
       bundle 'gem test'
       app = bundled_app("test")
-      helper = Bundler::GemHelper.new(app.to_s)
+      helper = Fundler::GemHelper.new(app.to_s)
       helper.gemspec.name.should == 'test'
     end
 
@@ -14,20 +14,20 @@ describe "Bundler::GemHelper tasks" do
       bundle 'gem test'
       app = bundled_app("test")
       FileUtils.rm(File.join(app.to_s, 'test.gemspec'))
-      proc { Bundler::GemHelper.new(app.to_s) }.should raise_error(/Unable to determine name/)
+      proc { Fundler::GemHelper.new(app.to_s) }.should raise_error(/Unable to determine name/)
     end
 
     it "should fail when there are two gemspecs and the name isn't specified" do
       bundle 'gem test'
       app = bundled_app("test")
       File.open(File.join(app.to_s, 'test2.gemspec'), 'w') {|f| f << ''}
-      proc { Bundler::GemHelper.new(app.to_s) }.should raise_error(/Unable to determine name/)
+      proc { Fundler::GemHelper.new(app.to_s) }.should raise_error(/Unable to determine name/)
     end
   end
 
   context "gem management" do
     def mock_confirm_message(message)
-      Bundler.ui.should_receive(:confirm).with(message)
+      Fundler.ui.should_receive(:confirm).with(message)
     end
 
     def mock_build_message
@@ -39,11 +39,11 @@ describe "Bundler::GemHelper tasks" do
       @app = bundled_app("test")
       @gemspec = File.read("#{@app.to_s}/test.gemspec")
       File.open("#{@app.to_s}/test.gemspec", 'w'){|f| f << @gemspec.gsub('TODO: ', '') }
-      @helper = Bundler::GemHelper.new(@app.to_s)
+      @helper = Fundler::GemHelper.new(@app.to_s)
     end
 
     it "uses a shell UI for output" do
-      Bundler.ui.should be_a(Bundler::UI::Shell)
+      Fundler.ui.should be_a(Fundler::UI::Shell)
     end
 
     describe 'build' do
@@ -87,7 +87,7 @@ describe "Bundler::GemHelper tasks" do
       end
 
       it 'raises an appropriate error if there is no git remote' do
-        Bundler.ui.stub(:confirm => nil, :error => nil) # silence messages
+        Fundler.ui.stub(:confirm => nil, :error => nil) # silence messages
 
         Dir.chdir(gem_repo1) {
           `git init --bare`

@@ -33,7 +33,7 @@ describe "bundle install with gem sources" do
         @err.should =~ /no such file to load -- thin/
       end
 
-      it "sets up everything if Bundler.setup is used with no groups" do
+      it "sets up everything if Fundler.setup is used with no groups" do
         out = run("require 'rack'; puts RACK")
         check out.should == '1.0.0'
 
@@ -79,7 +79,7 @@ describe "bundle install with gem sources" do
           out.should_not include("activesupport")
         end
 
-        it "allows Bundler.setup for specific groups" do
+        it "allows Fundler.setup for specific groups" do
           bundle :install, :without => "emo"
           run("require 'rack'; puts RACK", :default)
           out.should == '1.0.0'

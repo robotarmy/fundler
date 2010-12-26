@@ -3,7 +3,7 @@ $:.unshift File.expand_path('../../lib', __FILE__)
 
 require 'fileutils'
 require 'rubygems'
-require 'bundler'
+require 'fundler'
 require 'rspec'
 
 # Require the correct version of popen for the current platform

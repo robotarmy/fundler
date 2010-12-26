@@ -186,7 +186,7 @@ describe "bundle flex_install" do
     it "does not install gems whose dependencies are not met" do
       bundle :install
       ruby <<-RUBY
-        require 'bundler/setup'
+        require 'fundler/setup'
       RUBY
       out.should =~ /could not find gem 'rack-obama/i
     end
@@ -194,7 +194,7 @@ describe "bundle flex_install" do
     it "suggests bundle update when the Gemfile requires different versions than the lock" do
       nice_error = <<-E.strip.gsub(/^ {8}/, '')
         Fetching source index for file:#{gem_repo2}/
-        Bundler could not find compatible versions for gem "rack":
+        Fundler could not find compatible versions for gem "rack":
           In snapshot (Gemfile.lock):
             rack (0.9.1)
 

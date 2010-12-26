@@ -85,11 +85,11 @@ describe "bundle update without a Gemfile.lock" do
   end
 end
 
-describe "bundle update when a gem depends on a newer version of bundler" do
+describe "bundle update when a gem depends on a newer version of fundler" do
   before(:each) do
     build_repo2 do
       build_gem "rails", "3.0.1" do |s|
-        s.add_dependency "bundler", Bundler::VERSION.succ
+        s.add_dependency "fundler", Fundler::VERSION.succ
       end
     end
 
@@ -104,9 +104,9 @@ describe "bundle update when a gem depends on a newer version of bundler" do
     err.should be_empty
   end
 
-  it "should explain that bundler conflicted" do
+  it "should explain that fundler conflicted" do
     bundle "update"
     out.should_not =~ /In snapshot/
-    out.should =~ /Current Bundler version/
+    out.should =~ /Current Fundler version/
   end
 end

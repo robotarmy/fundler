@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Bundler.setup" do
+describe "Fundler.setup" do
   it "raises if the Gemfile was not yet installed" do
     gemfile <<-G
       source "file://#{gem_repo1}"
@@ -9,12 +9,12 @@ describe "Bundler.setup" do
 
     ruby <<-R
       require 'rubygems'
-      require 'bundler'
+      require 'fundler'
 
       begin
-        Bundler.setup
+        Fundler.setup
         puts "FAIL"
-      rescue Bundler::GemNotFound
+      rescue Fundler::GemNotFound
         puts "WIN"
       end
     R
@@ -30,9 +30,9 @@ describe "Bundler.setup" do
 
     ruby <<-R, :expect_err => true
       require 'rubygems'
-      require 'bundler'
+      require 'fundler'
 
-      Bundler.setup
+      Fundler.setup
     R
 
     bundled_app("Gemfile.lock").should_not exist
@@ -54,9 +54,9 @@ describe "Bundler.setup" do
 
     ruby <<-R, :expect_err => true
       require 'rubygems'
-      require 'bundler'
+      require 'fundler'
 
-      Bundler.setup
+      Fundler.setup
     R
 
     File.read(bundled_app("Gemfile.lock")).should == lockfile
@@ -154,7 +154,7 @@ describe "Bundler.setup" do
 
       it "removes system gems from Gem.source_index" do
         run "require 'yard'"
-        out.should == "bundler-#{Bundler::VERSION}\nyard-1.0"
+        out.should == "fundler-#{Fundler::VERSION}\nyard-1.0"
       end
 
       context "when the ruby stdlib is a substring of Gem.path" do
@@ -207,10 +207,10 @@ describe "Bundler.setup" do
 
       ruby <<-R
         require 'rubygems'
-        require 'bundler'
+        require 'fundler'
 
         begin
-          Bundler.setup
+          Fundler.setup
           puts "WIN"
         rescue Exception => e
           puts "FAIL"
@@ -229,12 +229,12 @@ describe "Bundler.setup" do
 
       ruby <<-R
         require "rubygems"
-        require "bundler"
+        require "fundler"
 
         begin
-          Bundler.setup
+          Fundler.setup
           puts "FAIL"
-        rescue Bundler::GitError => e
+        rescue Fundler::GitError => e
           puts e.message
         end
       R
@@ -286,7 +286,7 @@ describe "Bundler.setup" do
       should_be_installed "activesupport 2.3.2", :groups => :default
     end
 
-    it "remembers --without and does not bail on bare Bundler.setup" do
+    it "remembers --without and does not bail on bare Fundler.setup" do
       install_gemfile <<-G, :without => :rails
         source "file://#{gem_repo1}"
         gem "activesupport"
@@ -301,7 +301,7 @@ describe "Bundler.setup" do
       should_be_installed "activesupport 2.3.2"
     end
 
-    it "remembers --without and does not include groups passed to Bundler.setup" do
+    it "remembers --without and does not include groups passed to Fundler.setup" do
       install_gemfile <<-G, :without => :rails
         source "file://#{gem_repo1}"
         gem "activesupport"
@@ -337,9 +337,9 @@ describe "Bundler.setup" do
         ruby <<-R
           require 'rubygems'
           gem "thin"
-          require 'bundler'
+          require 'fundler'
           begin
-            Bundler.setup
+            Fundler.setup
             puts "FAIL"
           rescue Gem::LoadError => e
             puts e.message
@@ -553,11 +553,11 @@ describe "Bundler.setup" do
       bundle "install"
 
       ruby <<-RUBY
-        require 'bundler'
-        def Bundler.require(path)
+        require 'fundler'
+        def Fundler.require(path)
           raise "LOSE"
         end
-        Bundler.load
+        Fundler.load
       RUBY
 
       err.should be_empty
@@ -565,13 +565,13 @@ describe "Bundler.setup" do
     end
   end
 
-  describe "when Bundler is bundled" do
+  describe "when Fundler is bundled" do
     it "doesn't blow up" do
       install_gemfile <<-G
-        gem "bundler", :path => "#{File.expand_path("..", lib)}"
+        gem "fundler", :path => "#{File.expand_path("..", lib)}"
       G
 
-      bundle %|exec ruby -e "require 'bundler'; Bundler.setup"|
+      bundle %|exec ruby -e "require 'fundler'; Fundler.setup"|
       err.should be_empty
     end
   end

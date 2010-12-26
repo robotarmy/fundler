@@ -29,8 +29,8 @@ describe "bundle show" do
     out.should == default_bundle_path('gems', 'rails-2.3.2').to_s
   end
 
-  it "prints the path to the running bundler" do
-    bundle "show bundler"
+  it "prints the path to the running fundler" do
+    bundle "show fundler"
     out.should == File.expand_path('../../../', __FILE__)
   end
 

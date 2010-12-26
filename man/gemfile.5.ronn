@@ -46,7 +46,7 @@ Each _gem_ `MAY` have one or more version specifiers.
 ### REQUIRE AS (:require)
 
 Each _gem_ `MAY` specify its main file, which should be used when autorequiring
-(`Bundler.require`).
+(`Fundler.require`).
 
     gem "sqlite3-ruby", :require => "sqlite3"
 
@@ -63,41 +63,41 @@ not specify membership in any group is placed in the `default` group.
     gem "rspec", :group => :test
     gem "wirble", :groups => [:development, :test]
 
-The Bundler runtime allows its two main methods, `Bundler.setup` and
-`Bundler.require`, to limit their impact to particular groups.
+The Fundler runtime allows its two main methods, `Fundler.setup` and
+`Fundler.require`, to limit their impact to particular groups.
 
     # setup adds gems to Ruby's load path
-    Bundler.setup                    # defaults to all groups
-    require "bundler/setup"          # same as Bundler.setup
-    Bundler.setup(:default)          # only set up the _default_ group
-    Bundler.setup(:test)             # only set up the _test_ group (but `not` _default_)
-    Bundler.setup(:default, :test)   # set up the _default_ and _test_ groups, but no others
+    Fundler.setup                    # defaults to all groups
+    require "fundler/setup"          # same as Fundler.setup
+    Fundler.setup(:default)          # only set up the _default_ group
+    Fundler.setup(:test)             # only set up the _test_ group (but `not` _default_)
+    Fundler.setup(:default, :test)   # set up the _default_ and _test_ groups, but no others
 
     # require requires all of the gems in the specified groups
-    Bundler.require                  # defaults to just the _default_ group
-    Bundler.require(:default)        # identical
-    Bundler.require(:default, :test) # requires the _default_ and _test_ groups
-    Bundler.require(:test)           # requires just the _test_ group
+    Fundler.require                  # defaults to just the _default_ group
+    Fundler.require(:default)        # identical
+    Fundler.require(:default, :test) # requires the _default_ and _test_ groups
+    Fundler.require(:test)           # requires just the _test_ group
 
-The Bundler CLI allows you to specify a list of groups whose gems `bundle install` should
+The Fundler CLI allows you to specify a list of groups whose gems `bundle install` should
 not install with the `--without` option. To specify multiple groups to ignore, specify a
 list of groups separated by spaces.
 
     bundle install --without test
     bundle install --without development test
 
-After running `bundle install --without test`, bundler will remember that you excluded
+After running `bundle install --without test`, fundler will remember that you excluded
 the test group in the last installation. The next time you run `bundle install`,
-without any `--without option`, bundler will recall it.
+without any `--without option`, fundler will recall it.
 
-Also, calling `Bundler.setup` with no parameters, or calling `require "bundler/setup"`
+Also, calling `Fundler.setup` with no parameters, or calling `require "fundler/setup"`
 will setup all groups except for the ones you excluded via `--without` (since they
 are obviously not available).
 
-Note that on `bundle install`, bundler downloads and evaluates all gems, in order to
+Note that on `bundle install`, fundler downloads and evaluates all gems, in order to
 create a single canonical list of all of the required gems and their dependencies.
 This means that you cannot list different versions of the same gems in different
-groups. For more details, see [Understanding Bundler](http://gembundler.com/rationale.html).
+groups. For more details, see [Understanding Fundler](http://gemfundler.com/rationale.html).
 
 ### PLATFORMS (:platforms)
 
@@ -137,8 +137,8 @@ As with groups, you can specify one or more platforms:
     gem "ruby-debug", :platforms => :mri_18
     gem "nokogiri",   :platforms => [:mri_18, :jruby]
 
-All operations involving groups (`bundle install`, `Bundler.setup`,
-`Bundler.require`) behave exactly the same as if any groups not
+All operations involving groups (`bundle install`, `Fundler.setup`,
+`Fundler.require`) behave exactly the same as if any groups not
 matching the current platform were explicitly excluded.
 
 ### GIT (:git)
@@ -161,7 +161,7 @@ directory containing the gem, with the extension `.gemspec`. This file
 command. It `MUST NOT` have any dependencies, other than on the files in
 the git repository itself and any built-in functionality of Ruby or Rubygems.
 
-If a git repository does not have a `.gemspec`, bundler will attempt to
+If a git repository does not have a `.gemspec`, fundler will attempt to
 create one, but it will not contain any dependencies, executables, or
 C extension compilation instructions. As a result, it may fail to properly
 integrate into your application.
@@ -169,14 +169,14 @@ integrate into your application.
 If a git repository does have a `.gemspec` for the gem you attached it
 to, a version specifier, if provided, means that the git repository is
 only valid if the `.gemspec` specifies a version matching the version
-specifier. If not, bundler will print a warning.
+specifier. If not, fundler will print a warning.
 
     gem "rails", "2.3.8", :git => "git://github.com/rails/rails.git"
     # bundle install will fail, because the .gemspec in the rails
     # repository's master branch specifies version 3.0.0
 
 If a git repository does `not` have a `.gemspec` for the gem you attached
-it to, a version specifier `MUST` be provided. Bundler will use this
+it to, a version specifier `MUST` be provided. Fundler will use this
 version in the simple `.gemspec` it creates.
 
 Git repositories support a number of additional options.
@@ -185,7 +185,7 @@ Git repositories support a number of additional options.
     You `MUST` only specify at most one of these options. The default
     is `:branch => "master"`
   * `submodules`:
-    Specify `:submodules => true` to cause bundler to expand any
+    Specify `:submodules => true` to cause fundler to expand any
     submodules included in the git repository
 
 If a git repository contains multiple `.gemspecs`, each `.gemspec`
@@ -200,7 +200,7 @@ the `.gemspec`.
     | |-activesupport.gemspec [activesupport gem located here]
     ...
 
-To install a gem located in a git repository, bundler changes to
+To install a gem located in a git repository, fundler changes to
 the directory containing the gemspec, runs `gem build name.gemspec`
 and then installs the resulting gem. The `gem build` command,
 which comes standard with Rubygems, evaluates the `.gemspec` in
@@ -215,9 +215,9 @@ directory containing the `Gemfile`.
 Similar to the semantics of the `:git` option, the `:path`
 option requires that the directory in question either contains
 a `.gemspec` for the gem, or that you specify an explicit
-version that bundler should use.
+version that fundler should use.
 
-Unlike `:git`, bundler does not compile C extensions for
+Unlike `:git`, fundler does not compile C extensions for
 gems specified as paths.
 
     gem "rails", :path => "vendor/rails"
@@ -248,31 +248,31 @@ all gems in the block will inherit those options.
 
 ## GEMSPEC (#gemspec)
 
-If you wish to use Bundler to help install dependencies for a gem while it is
+If you wish to use Fundler to help install dependencies for a gem while it is
 being developed, use the `gemspec` method to pull in the dependencies listed in
 the `.gemspec` file.
 
 The `gemspec` method adds any runtime dependencies as gem requirements in the
 default group. It also adds development dependencies as gem requirements in the
 `development` group. Finally, it adds a gem requirement on your project (`:path
-=> '.'`). In conjunction with `Bundler.setup`, this allows you to require project
+=> '.'`). In conjunction with `Fundler.setup`, this allows you to require project
 files in your test code as you would if the project were installed as a gem; you
 need not manipulate the load path manually or require project files via relative
 paths.
 
 The `gemspec` method supports optional `:path`, `:name`, and `:development_group`
-options, which control where bundler looks for the `.gemspec`, what named
+options, which control where fundler looks for the `.gemspec`, what named
 `.gemspec` it uses (if more than one is present), and which group development
 dependencies are included in.
 
 ## SOURCE PRIORITY
 
 When attempting to locate a gem to satisfy a gem requirement,
-bundler uses the following priority order:
+fundler uses the following priority order:
 
   1. The source explicitly attached to the gem (using `:path` or `:git`)
   2. For implicit gems (dependencies of explicit gems), any git or path
-     repository otherwise declared. This results in bundler prioritizing the
+     repository otherwise declared. This results in fundler prioritizing the
      ActiveSupport gem from the Rails git repository over ones from
      `rubygems.org`
   3. The sources specified via `source`, in the order in which they were

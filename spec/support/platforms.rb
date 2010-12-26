@@ -1,6 +1,6 @@
 module Spec
   module Platforms
-    include Bundler::GemHelpers
+    include Fundler::GemHelpers
 
     def rb
       Gem::Platform::RUBY

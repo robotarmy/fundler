@@ -27,7 +27,7 @@ describe "bundle install with git sources" do
     end
 
     it "caches the git repo" do
-      Dir["#{default_bundle_path}/cache/bundler/git/foo-1.0-*"].should have(1).item
+      Dir["#{default_bundle_path}/cache/fundler/git/foo-1.0-*"].should have(1).item
     end
 
     it "does not update the git source implicitly" do

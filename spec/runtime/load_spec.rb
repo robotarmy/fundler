@@ -1,11 +1,11 @@
 require "spec_helper"
 
-describe "Bundler.load" do
+describe "Fundler.load" do
   before :each do
     system_gems "rack-1.0.0"
     # clear memoized method results
     # TODO: Don't reset internal ivars
-    Bundler.instance_eval do
+    Fundler.instance_eval do
       @load = nil
       @runtime = nil
       @definition = nil
@@ -21,18 +21,18 @@ describe "Bundler.load" do
     end
 
     it "provides a list of the env dependencies" do
-      Bundler.load.dependencies.should have_dep("rack", ">= 0")
+      Fundler.load.dependencies.should have_dep("rack", ">= 0")
     end
 
     it "provides a list of the resolved gems" do
-      Bundler.load.gems.should have_gem("rack-1.0.0", "bundler-#{Bundler::VERSION}")
+      Fundler.load.gems.should have_gem("rack-1.0.0", "fundler-#{Fundler::VERSION}")
     end
 
     it "ignores blank BUNDLE_GEMFILEs" do
       lambda {
         ENV['BUNDLE_GEMFILE'] = ""
-        Bundler.load
-      }.should_not raise_error(Bundler::GemfileNotFound)
+        Fundler.load
+      }.should_not raise_error(Fundler::GemfileNotFound)
     end
 
   end
@@ -40,27 +40,27 @@ describe "Bundler.load" do
   describe "without a gemfile" do
     it "raises an exception if the default gemfile is not found" do
       lambda {
-        Bundler.load
-      }.should raise_error(Bundler::GemfileNotFound, /could not locate gemfile/i)
+        Fundler.load
+      }.should raise_error(Fundler::GemfileNotFound, /could not locate gemfile/i)
     end
 
     it "raises an exception if a specified gemfile is not found" do
       lambda {
         ENV['BUNDLE_GEMFILE'] = "omg.rb"
-        Bundler.load
-      }.should raise_error(Bundler::GemfileNotFound, /omg\.rb/)
+        Fundler.load
+      }.should raise_error(Fundler::GemfileNotFound, /omg\.rb/)
     end
 
     it "does not find a Gemfile above the testing directory" do
-      bundler_gemfile = tmp.join("../Gemfile")
-      unless File.exists?(bundler_gemfile)
-        FileUtils.touch(bundler_gemfile)
-        @remove_bundler_gemfile = true
+      fundler_gemfile = tmp.join("../Gemfile")
+      unless File.exists?(fundler_gemfile)
+        FileUtils.touch(fundler_gemfile)
+        @remove_fundler_gemfile = true
       end
       begin
-        lambda { Bundler.load }.should raise_error(Bundler::GemfileNotFound)
+        lambda { Fundler.load }.should raise_error(Fundler::GemfileNotFound)
       ensure
-        bundler_gemfile.rmtree if @remove_bundler_gemfile
+        fundler_gemfile.rmtree if @remove_fundler_gemfile
       end
     end
 
@@ -75,9 +75,9 @@ describe "Bundler.load" do
       G
 
       ruby <<-RUBY
-        require "bundler"
-        Bundler.setup :default
-        Bundler.require :default
+        require "fundler"
+        Fundler.setup :default
+        Fundler.require :default
         puts RACK
         begin
           require "activesupport"
@@ -97,7 +97,7 @@ describe "Bundler.load" do
         gem "activerecord"
       G
 
-      Bundler.load.specs.each do |spec|
+      Fundler.load.specs.each do |spec|
         spec.to_yaml.should_not =~ /^\s+source:/
         spec.to_yaml.should_not =~ /^\s+groups:/
       end

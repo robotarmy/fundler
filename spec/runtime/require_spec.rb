@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Bundler.require" do
+describe "Fundler.require" do
   before :each do
     build_lib "one", "1.0.0" do |s|
       s.write "lib/baz.rb", "puts 'baz'"
@@ -47,32 +47,32 @@ describe "Bundler.require" do
 
   it "requires the gems" do
     # default group
-    run "Bundler.require"
+    run "Fundler.require"
     check out.should == "two"
 
     # specific group
-    run "Bundler.require(:bar)"
+    run "Fundler.require(:bar)"
     check out.should == "baz\nqux"
 
     # default and specific group
-    run "Bundler.require(:default, :bar)"
+    run "Fundler.require(:default, :bar)"
     check out.should == "baz\nqux\ntwo"
 
     # specific group given as a string
-    run "Bundler.require('bar')"
+    run "Fundler.require('bar')"
     check out.should == "baz\nqux"
 
     # specific group declared as a string
-    run "Bundler.require(:string)"
+    run "Fundler.require(:string)"
     check out.should == "six"
 
     # required in resolver order instead of gemfile order
-    run("Bundler.require(:not)")
+    run("Fundler.require(:not)")
     out.split("\n").sort.should == ['seven', 'three']
   end
 
   it "allows requiring gems with non standard names explicitly" do
-    run "Bundler.require ; require 'mofive'"
+    run "Fundler.require ; require 'mofive'"
     out.should == "two\nfive"
   end
 
@@ -84,7 +84,7 @@ describe "Bundler.require" do
 
     run <<-R
       begin
-        Bundler.require
+        Fundler.require
       rescue LoadError => e
         puts e.message
       end
@@ -94,13 +94,13 @@ describe "Bundler.require" do
 
   describe "using bundle exec" do
     it "requires the locked gems" do
-      bundle "exec ruby -e 'Bundler.require'"
+      bundle "exec ruby -e 'Fundler.require'"
       check out.should == "two"
 
-      bundle "exec ruby -e 'Bundler.require(:bar)'"
+      bundle "exec ruby -e 'Fundler.require(:bar)'"
       check out.should == "baz\nqux"
 
-      bundle "exec ruby -e 'Bundler.require(:default, :bar)'"
+      bundle "exec ruby -e 'Fundler.require(:default, :bar)'"
       out.should == "baz\nqux\ntwo"
     end
   end
@@ -137,7 +137,7 @@ describe "Bundler.require" do
         gem "one"
       G
 
-      run "Bundler.require"
+      run "Fundler.require"
       check out.should == "two\nmodule_two\none"
     end
 
@@ -154,18 +154,18 @@ describe "Bundler.require" do
         G
       end
 
-      it "requires both with Bundler.require(both)" do
-        run "Bundler.require(:one, :two)"
+      it "requires both with Fundler.require(both)" do
+        run "Fundler.require(:one, :two)"
         out.should == "ONE\nTWO"
       end
 
-      it "requires one with Bundler.require(:one)" do
-        run "Bundler.require(:one)"
+      it "requires one with Fundler.require(:one)" do
+        run "Fundler.require(:one)"
         out.should == "ONE"
       end
 
-      it "requires :two with Bundler.require(:two)" do
-        run "Bundler.require(:two)"
+      it "requires :two with Fundler.require(:two)" do
+        run "Fundler.require(:two)"
         out.should == "TWO"
       end
     end
@@ -177,7 +177,7 @@ describe "Bundler.require" do
         gem "two"
       G
 
-      run "Bundler.require"
+      run "Fundler.require"
       check out.should == "two_not_loaded\none\ntwo"
     end
 
@@ -191,14 +191,14 @@ describe "Bundler.require" do
           gem "busted_require"
         G
 
-        run "Bundler.require", :expect_err => true
+        run "Fundler.require", :expect_err => true
         err.should include("no such file to load -- no_such_file_omg")
       end
     end
   end
 end
 
-describe "Bundler.require with platform specific dependencies" do
+describe "Fundler.require with platform specific dependencies" do
   it "does not require the gems that are pinned to other platforms" do
     install_gemfile <<-G
       source "file://#{gem_repo1}"
@@ -210,7 +210,7 @@ describe "Bundler.require with platform specific dependencies" do
       gem "rack", "1.0.0"
     G
 
-    run "Bundler.require", :expect_err => true
+    run "Fundler.require", :expect_err => true
     err.should be_empty
   end
 
@@ -223,7 +223,7 @@ describe "Bundler.require with platform specific dependencies" do
       end
     G
 
-    run "Bundler.require; puts RACK", :expect_err => true
+    run "Fundler.require; puts RACK", :expect_err => true
 
     check out.should == "1.0.0"
     err.should be_empty

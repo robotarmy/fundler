@@ -7,10 +7,10 @@ bundle(1) -- Ruby Dependency Management
 
 ## DESCRIPTION
 
-Bundler manages an `application's dependencies` through its entire life
+Fundler manages an `application's dependencies` through its entire life
 across many machines systematically and repeatably.
 
-See [the bundler website](http://gembundler.com) for information on getting
+See [the fundler website](http://gemfundler.com) for information on getting
 started, and Gemfile(5) for more information on the `Gemfile` format.
 
 ## OPTIONS
@@ -41,13 +41,13 @@ We divide `bundle` subcommands into primary commands and utilities.
   Execute a script in the context of the current bundle
 
 * [bundle config(1)][bundle-config]:
-  Specify and read configuration options for bundler
+  Specify and read configuration options for fundler
 
 ## UTILITIES
 
 * `bundle check(1)`:
   Determine whether the requirements for your application are installed
-  and available to bundler
+  and available to fundler
 
 * `bundle list(1)`:
   Show all of the gems in the current bundle
@@ -68,7 +68,7 @@ We divide `bundle` subcommands into primary commands and utilities.
   Generate a simple `Gemfile`, placed in the current directory
 
 * `bundle gem(1)`:
-  Create a simple gem, suitable for development with bundler
+  Create a simple gem, suitable for development with fundler
 
 ## OBSOLETE
 

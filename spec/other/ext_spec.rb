@@ -7,8 +7,8 @@ describe "Gem::Specification#match_platform" do
   end
 end
 
-describe "Bundler::GemHelpers#generic" do
-  include Bundler::GemHelpers
+describe "Fundler::GemHelpers#generic" do
+  include Fundler::GemHelpers
 
   it "converts non-windows platforms into ruby" do
     generic(pl('x86-darwin-10')).should == pl('ruby')

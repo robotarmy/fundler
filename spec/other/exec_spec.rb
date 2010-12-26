@@ -83,7 +83,7 @@ describe "bundle exec" do
       gem "rack"
     G
 
-    rubyopt = "-I#{bundler_path} -rbundler/setup"
+    rubyopt = "-I#{fundler_path} -rfundler/setup"
 
     bundle "exec 'echo $RUBYOPT'"
     out.should have_rubyopts(rubyopt)
@@ -99,7 +99,7 @@ describe "bundle exec" do
 
     bundle "exec foobarbaz", :exitstatus => true
     check exitstatus.should == 127
-    out.should include("bundler: command not found: foobarbaz")
+    out.should include("fundler: command not found: foobarbaz")
     out.should include("Install missing gem binaries with `bundle install`")
   end
 
@@ -111,7 +111,7 @@ describe "bundle exec" do
     bundle "exec touch foo"
     bundle "exec ./foo", :exitstatus => true
     check exitstatus.should == 126
-    out.should include("bundler: not executable: ./foo")
+    out.should include("fundler: not executable: ./foo")
   end
 
   describe "with gem binaries" do
@@ -210,7 +210,7 @@ describe "bundle exec" do
 
   end
 
-  describe "bundling bundler" do
+  describe "bundling fundler" do
     before(:each) do
       gemfile <<-G
         source "file://#{gem_repo1}"
@@ -225,11 +225,11 @@ describe "bundle exec" do
       exitstatus.should == 0
     end
 
-    it "does not explode when starting with Bundler.setup" do
+    it "does not explode when starting with Fundler.setup" do
       ruby <<-R
         require "rubygems"
-        require "bundler"
-        Bundler.setup
+        require "fundler"
+        Fundler.setup
         puts `bundle check`
         puts $?.exitstatus
       R

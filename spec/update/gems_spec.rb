@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle update" do
+describe "fundle update" do
   before :each do
     build_repo2
 
@@ -12,12 +12,12 @@ describe "bundle update" do
   end
 
   describe "with no arguments" do
-    it "updates the entire bundle" do
+    it "updates the entire fundle" do
       update_repo2 do
         build_gem "activesupport", "3.0"
       end
 
-      bundle "update"
+      fundle "update"
       should_be_installed "rack 1.2", "rack-obama 1.0", "activesupport 3.0"
     end
 
@@ -28,8 +28,8 @@ describe "bundle update" do
         gem "rack-obama"
         exit!
       G
-      bundle "update"
-      bundled_app("Gemfile.lock").should exist
+      fundle "update"
+      fundled_app("Gemfile.lock").should exist
     end
   end
 
@@ -39,13 +39,13 @@ describe "bundle update" do
         build_gem "activesupport", "3.0"
       end
 
-      bundle "update rack-obama"
+      fundle "update rack-obama"
       should_be_installed "rack 1.2", "rack-obama 1.0", "activesupport 2.3.5"
     end
   end
 end
 
-describe "bundle update in more complicated situations" do
+describe "fundle update in more complicated situations" do
   before :each do
     build_repo2
   end
@@ -64,12 +64,12 @@ describe "bundle update in more complicated situations" do
       end
     end
 
-    bundle "update thin"
+    fundle "update thin"
     should_be_installed "thin 2.0", "rack 1.2", "rack-obama 1.0"
   end
 end
 
-describe "bundle update without a Gemfile.lock" do
+describe "fundle update without a Gemfile.lock" do
   it "should not explode" do
     build_repo2
 
@@ -79,13 +79,13 @@ describe "bundle update without a Gemfile.lock" do
       gem "rack", "1.0"
     G
 
-    bundle "update"
+    fundle "update"
 
     should_be_installed "rack 1.0.0"
   end
 end
 
-describe "bundle update when a gem depends on a newer version of fundler" do
+describe "fundle update when a gem depends on a newer version of fundler" do
   before(:each) do
     build_repo2 do
       build_gem "rails", "3.0.1" do |s|
@@ -100,12 +100,12 @@ describe "bundle update when a gem depends on a newer version of fundler" do
   end
 
   it "should not explode" do
-    bundle "update"
+    fundle "update"
     err.should be_empty
   end
 
   it "should explain that fundler conflicted" do
-    bundle "update"
+    fundle "update"
     out.should_not =~ /In snapshot/
     out.should =~ /Current Fundler version/
   end

@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe "bundle init" do
+describe "fundle init" do
   it "generates a Gemfile" do
-    bundle :init
-    bundled_app("Gemfile").should exist
+    fundle :init
+    fundled_app("Gemfile").should exist
   end
 
   it "does not change existing Gemfiles" do
@@ -12,8 +12,8 @@ describe "bundle init" do
     G
 
     lambda {
-      bundle :init
-    }.should_not change { File.read(bundled_app("Gemfile")) }
+      fundle :init
+    }.should_not change { File.read(fundled_app("Gemfile")) }
   end
 
   it "should generate from an existing gemspec" do
@@ -28,9 +28,9 @@ describe "bundle init" do
       S
     end
 
-    bundle :init, :gemspec => spec_file
+    fundle :init, :gemspec => spec_file
 
-    gemfile = bundled_app("Gemfile").read
+    gemfile = fundled_app("Gemfile").read
     gemfile.should =~ /source :gemcutter/
     check gemfile.scan(/gem "rack", "= 1.0.1"/).size.should == 1
     check gemfile.scan(/gem "rspec", "= 1.2"/).size.should == 1

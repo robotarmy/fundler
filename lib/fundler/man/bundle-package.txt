@@ -3,25 +3,25 @@ BUNDLE-PACKAGE(1)					     BUNDLE-PACKAGE(1)
 
 
 NAME
-       bundle-package - Package your needed .gem files into your application
+       fundle-package - Package your needed .gem files into your application
 
 SYNOPSIS
-       bundle package
+       fundle package
 
 DESCRIPTION
        Copy  all of the .gem files needed to run the application into the ven-
-       dor/cache directory. In the future, when running bundle install(1) bun-
+       dor/cache directory. In the future, when running fundle install(1) bun-
        dle-install.1.html, use the gems in the cache in preference to the ones
        on rubygems.org.
 
 GIT AND PATH GEMS
-       In Fundler 1.0, the bundle package command only	packages  .gem	files,
+       In Fundler 1.0, the fundle package command only	packages  .gem	files,
        not  gems  specified  using the :git or :path options. This will likely
        change in the future.
 
 REMOTE FETCHING
-       By default, if you simply run bundle  install(1)  bundle-install.1.html
-       after  running  bundle  package(1)  bundle-package.1.html, fundler will
+       By default, if you simply run fundle  install(1)  fundle-install.1.html
+       after  running  fundle  package(1)  fundle-package.1.html, fundler will
        still connect to rubygems.org to check whether a platform-specific  gem
        exists for any of the gems in vendor/cache.
 
@@ -35,9 +35,9 @@ REMOTE FETCHING
 
 
 
-       If  you run bundle package under C Ruby, fundler will retrieve the ver-
+       If  you run fundle package under C Ruby, fundler will retrieve the ver-
        sion of nokogiri for the "ruby" platform. If you deploy	to  JRuby  and
-       run  bundle install, fundler is forced to check to see whether a "java"
+       run  fundle install, fundler is forced to check to see whether a "java"
        platformed nokogiri exists.
 
        Even though the nokogiri gem  for  the  Ruby  platform  is  technically
@@ -51,13 +51,13 @@ REMOTE FETCHING
        Linux, or even when developing on OSX and deploying to Linux.
 
        If you know for sure that the gems packaged in vendor/cache are	appro-
-       priate  for the platform you are on, you can run bundle install --local
+       priate  for the platform you are on, you can run fundle install --local
        to skip checking for more appropriate gems, and just use  the  ones  in
        vendor/cache.
 
        One  way  to be sure that you have the right platformed versions of all
-       your gems is to run bundle package on an identical machine and check in
-       the  gems.  For	instance,  you	can run bundle package on an identical
+       your gems is to run fundle package on an identical machine and check in
+       the  gems.  For	instance,  you	can run fundle package on an identical
        staging box during your staging process, and check in the  vendor/cache
        before deploying to production.
 

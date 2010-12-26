@@ -36,7 +36,7 @@ module Fundler
       end
 
       # Ensure that BUNDLE_PATH exists
-      Fundler.mkdir_p(Fundler.bundle_path) unless File.exist?(Fundler.bundle_path)
+      Fundler.mkdir_p(Fundler.fundle_path) unless File.exist?(Fundler.fundle_path)
 
       # Must install gems in the order that the resolver provides
       # as dependencies might actually affect the installation of
@@ -75,7 +75,7 @@ module Fundler
       ruby_command = Thor::Util.ruby_command
 
       spec.executables.each do |executable|
-        next if executable == "bundle"
+        next if executable == "fundle"
         File.open "#{bin_path}/#{executable}", 'w', 0755 do |f|
           f.puts ERB.new(template, nil, '-').result(binding)
         end

@@ -2,18 +2,18 @@
 
 ## Troubleshooting
 
-Instructions for common Fundler use-cases can be found on the [Fundler documentation site](http://gemfundler.com/v1.0/). Detailed information about each Fundler command, including help with common problems, can be found in the [Fundler man pages](http://gemfundler.com/man/bundle.1.html).
+Instructions for common Fundler use-cases can be found on the [Fundler documentation site](http://gemfundler.com/v1.0/). Detailed information about each Fundler command, including help with common problems, can be found in the [Fundler man pages](http://gemfundler.com/man/fundle.1.html).
 
 After reading the documentation, try these troubleshooting steps:
 
     # remove user-specific gems and git repos
-    rm -rf ~/.bundle/ ~/.gem/
+    rm -rf ~/.fundle/ ~/.gem/
 
     # remove system-wide git repos and git checkouts
     rm -rf $GEM_HOME/fundler/ $GEM_HOME/cache/fundler/
 
     # remove project-specific settings and git repos
-    rm -rf .bundle/
+    rm -rf .fundle/
 
     # remove project-specific cached .gem files
     rm -rf vendor/cache/
@@ -22,7 +22,7 @@ After reading the documentation, try these troubleshooting steps:
     rm -rf Gemfile.lock
 
     # try to install one more time
-    bundle install
+    fundle install
 
 ## Reporting unresolved problems
 
@@ -36,7 +36,7 @@ Instructions that allow the Fundler team to reproduce your issue are vitally imp
   - Your Gemfile
   - Your Gemfile.lock
   - If you are on 0.9, whether you have locked or not
-  - If you are on 1.0, the result of `bundle config`
+  - If you are on 1.0, the result of `fundle config`
   - The command you ran to generate exception(s)
   - The exception backtrace(s)
 

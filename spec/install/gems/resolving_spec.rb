@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle install with gem sources" do
+describe "fundle install with gem sources" do
   describe "install time dependencies" do
     it "installs gems with implicit rake dependencies" do
       install_gemfile <<-G

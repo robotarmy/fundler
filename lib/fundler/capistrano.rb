@@ -5,6 +5,6 @@
 require 'fundler/deployment'
 
 Capistrano::Configuration.instance(:must_exist).load do
-  after "deploy:update_code", "bundle:install"
+  after "deploy:update_code", "fundle:install"
   Fundler::Deployment.define_task(self, :task, :except => { :no_release => true })
 end

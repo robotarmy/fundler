@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   man_files            = Dir.glob("lib/fundler/man/**/*")
   s.files              = `git ls-files`.split("\n") + man_files
   s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables        = %w(bundle)
-  s.default_executable = "bundle"
+  s.executables        = %w(fundle)
+  s.default_executable = "fundle"
   s.require_paths      = ["lib"]
 end

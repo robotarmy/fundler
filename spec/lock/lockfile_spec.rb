@@ -152,7 +152,7 @@ describe "the lockfile format" do
         rack
     L
 
-    bundle "install"
+    fundle "install"
     should_be_installed "rack 1.0.0"
   end
 
@@ -376,7 +376,7 @@ describe "the lockfile format" do
   end
 
   it "stores relative paths when the path is provided in a relative fashion and in Gemfile dir" do
-    build_lib "foo", :path => bundled_app('foo')
+    build_lib "foo", :path => fundled_app('foo')
 
     install_gemfile <<-G
       path "foo"
@@ -401,7 +401,7 @@ describe "the lockfile format" do
   end
 
   it "stores relative paths when the path is provided in a relative fashion and is above Gemfile dir" do
-    build_lib "foo", :path => bundled_app(File.join('..', 'foo'))
+    build_lib "foo", :path => fundled_app(File.join('..', 'foo'))
 
     install_gemfile <<-G
       path "../foo"
@@ -426,7 +426,7 @@ describe "the lockfile format" do
   end
 
   it "stores relative paths when the path is provided in an absolute fashion but is relative" do
-    build_lib "foo", :path => bundled_app('foo')
+    build_lib "foo", :path => fundled_app('foo')
 
     install_gemfile <<-G
       path File.expand_path("../foo", __FILE__)
@@ -611,7 +611,7 @@ describe "the lockfile format" do
       gem "rack", "1.1"
     G
 
-    bundled_app("Gemfile.lock").should_not exist
+    fundled_app("Gemfile.lock").should_not exist
     out.should include "rack (= 1.0) and rack (= 1.1)"
   end
 
@@ -623,7 +623,7 @@ describe "the lockfile format" do
       gem "rack", :git => "git://hubz.com"
     G
 
-    bundled_app("Gemfile.lock").should_not exist
+    fundled_app("Gemfile.lock").should_not exist
     out.should include "rack (>= 0) should come from an unspecfied source and git://hubz.com (at master)"
   end
 
@@ -658,25 +658,25 @@ describe "the lockfile format" do
     end
 
     it "generates Gemfile.lock with \\n line endings" do
-      File.read(bundled_app("Gemfile.lock")).should_not match("\r\n")
+      File.read(fundled_app("Gemfile.lock")).should_not match("\r\n")
       should_be_installed "rack 1.0"
     end
 
     it "preserves Gemfile.lock \\n line endings" do
       update_repo2
 
-      bundle "update"
-      File.read(bundled_app("Gemfile.lock")).should_not match("\r\n")
+      fundle "update"
+      File.read(fundled_app("Gemfile.lock")).should_not match("\r\n")
       should_be_installed "rack 1.2"
     end
 
     it "preserves Gemfile.lock \\n\\r line endings" do
       update_repo2
-      win_lock = File.read(bundled_app("Gemfile.lock")).gsub(/\n/, "\r\n")
-      File.open(bundled_app("Gemfile.lock"), "wb"){|f| f.puts(win_lock) }
+      win_lock = File.read(fundled_app("Gemfile.lock")).gsub(/\n/, "\r\n")
+      File.open(fundled_app("Gemfile.lock"), "wb"){|f| f.puts(win_lock) }
 
-      bundle "update"
-      File.read(bundled_app("Gemfile.lock")).should match("\r\n")
+      fundle "update"
+      File.read(fundled_app("Gemfile.lock")).should match("\r\n")
       should_be_installed "rack 1.2"
     end
   end

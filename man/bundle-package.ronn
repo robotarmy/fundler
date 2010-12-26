@@ -1,26 +1,26 @@
-bundle-package(1) -- Package your needed `.gem` files into your application
+fundle-package(1) -- Package your needed `.gem` files into your application
 ===========================================================================
 
 ## SYNOPSIS
 
-`bundle package`
+`fundle package`
 
 ## DESCRIPTION
 
 Copy all of the `.gem` files needed to run the application into the
-`vendor/cache` directory. In the future, when running [bundle install(1)][bundle-install],
+`vendor/cache` directory. In the future, when running [fundle install(1)][fundle-install],
 use the gems in the cache in preference to the ones on `rubygems.org`.
 
 ## GIT AND PATH GEMS
 
-In Fundler 1.0, the `bundle package` command only packages `.gem` files,
+In Fundler 1.0, the `fundle package` command only packages `.gem` files,
 not gems specified using the `:git` or `:path` options. This will likely
 change in the future.
 
 ## REMOTE FETCHING
 
-By default, if you simply run [bundle install(1)][bundle-install] after running
-[bundle package(1)][bundle-package], fundler will still connect to `rubygems.org`
+By default, if you simply run [fundle install(1)][fundle-install] after running
+[fundle package(1)][fundle-package], fundler will still connect to `rubygems.org`
 to check whether a platform-specific gem exists for any of the gems
 in `vendor/cache`.
 
@@ -30,9 +30,9 @@ For instance, consider this Gemfile(5):
 
     gem "nokogiri"
 
-If you run `bundle package` under C Ruby, fundler will retrieve
+If you run `fundle package` under C Ruby, fundler will retrieve
 the version of `nokogiri` for the `"ruby"` platform. If you deploy
-to JRuby and run `bundle install`, fundler is forced to check to
+to JRuby and run `fundle install`, fundler is forced to check to
 see whether a `"java"` platformed `nokogiri` exists.
 
 Even though the `nokogiri` gem for the Ruby platform is
@@ -48,12 +48,12 @@ deploying to Linux.
 
 If you know for sure that the gems packaged in `vendor/cache`
 are appropriate for the platform you are on, you can run
-`bundle install --local` to skip checking for more appropriate
+`fundle install --local` to skip checking for more appropriate
 gems, and just use the ones in `vendor/cache`.
 
 One way to be sure that you have the right platformed versions
-of all your gems is to run `bundle package` on an identical
+of all your gems is to run `fundle package` on an identical
 machine and check in the gems. For instance, you can run
-`bundle package` on an identical staging box during your
+`fundle package` on an identical staging box during your
 staging process, and check in the `vendor/cache` before
 deploying to production.

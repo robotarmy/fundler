@@ -9,43 +9,43 @@ module Fundler
         role_default = "[:app]"
       end
 
-      roles = context.fetch(:bundle_roles, nil)
+      roles = context.fetch(:fundle_roles, nil)
       opts[:roles] = roles if roles
 
-      context.send :namespace, :bundle do
+      context.send :namespace, :fundle do
         send :desc, <<-DESC
           Install the current Fundler environment. By default, gems will be \
-          installed to the shared/bundle path. Gems in the development and \
+          installed to the shared/fundle path. Gems in the development and \
           test group will not be installed. The install command is executed \
-          with the --deployment and --quiet flags. If the bundle cmd cannot \
-          be found then you can override the bundle_cmd variable to specifiy \
+          with the --deployment and --quiet flags. If the fundle cmd cannot \
+          be found then you can override the fundle_cmd variable to specifiy \
           which one it should use.
 
           You can override any of these defaults by setting the variables shown below.
 
-          N.B. bundle_roles must be defined before you require 'fundler/#{context_name}' \
+          N.B. fundle_roles must be defined before you require 'fundler/#{context_name}' \
           in your deploy.rb file.
 
-            set :bundle_gemfile,  "Gemfile"
-            set :bundle_dir,      File.join(fetch(:shared_path), 'bundle')
-            set :bundle_flags,    "--deployment --quiet"
-            set :bundle_without,  [:development, :test]
-            set :bundle_cmd,      "bundle" # e.g. "/opt/ruby/bin/bundle"
-            set :bundle_roles,    #{role_default} # e.g. [:app, :batch]
+            set :fundle_gemfile,  "Gemfile"
+            set :fundle_dir,      File.join(fetch(:shared_path), 'fundle')
+            set :fundle_flags,    "--deployment --quiet"
+            set :fundle_without,  [:development, :test]
+            set :fundle_cmd,      "fundle" # e.g. "/opt/ruby/bin/fundle"
+            set :fundle_roles,    #{role_default} # e.g. [:app, :batch]
         DESC
         send task_method, :install, opts do
-          bundle_cmd     = context.fetch(:bundle_cmd, "bundle")
-          bundle_flags   = context.fetch(:bundle_flags, "--deployment --quiet")
-          bundle_dir     = context.fetch(:bundle_dir, File.join(context.fetch(:shared_path), 'bundle'))
-          bundle_gemfile = context.fetch(:bundle_gemfile, "Gemfile")
-          bundle_without = [*context.fetch(:bundle_without, [:development, :test])].compact
+          fundle_cmd     = context.fetch(:fundle_cmd, "fundle")
+          fundle_flags   = context.fetch(:fundle_flags, "--deployment --quiet")
+          fundle_dir     = context.fetch(:fundle_dir, File.join(context.fetch(:shared_path), 'fundle'))
+          fundle_gemfile = context.fetch(:fundle_gemfile, "Gemfile")
+          fundle_without = [*context.fetch(:fundle_without, [:development, :test])].compact
 
-          args = ["--gemfile #{File.join(context.fetch(:current_release), bundle_gemfile)}"]
-          args << "--path #{bundle_dir}" unless bundle_dir.to_s.empty?
-          args << bundle_flags.to_s
-          args << "--without #{bundle_without.join(" ")}" unless bundle_without.empty?
+          args = ["--gemfile #{File.join(context.fetch(:current_release), fundle_gemfile)}"]
+          args << "--path #{fundle_dir}" unless fundle_dir.to_s.empty?
+          args << fundle_flags.to_s
+          args << "--without #{fundle_without.join(" ")}" unless fundle_without.empty?
 
-          run "#{bundle_cmd} install #{args.join(' ')}"
+          run "#{fundle_cmd} install #{args.join(' ')}"
         end
       end
     end

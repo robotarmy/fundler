@@ -9,28 +9,28 @@ describe "install with --deployment or --frozen" do
   end
 
   it "fails without a lockfile and says that --deployment requires a lock" do
-    bundle "install --deployment"
+    fundle "install --deployment"
     out.should include("The --deployment flag requires a Gemfile.lock")
   end
 
   it "fails without a lockfile and says that --frozen requires a lock" do
-    bundle "install --frozen"
+    fundle "install --frozen"
     out.should include("The --frozen flag requires a Gemfile.lock")
   end
 
   it "works after you try to deploy without a lock" do
-    bundle "install --deployment"
-    bundle :install, :exitstatus => true
+    fundle "install --deployment"
+    fundle :install, :exitstatus => true
     check exitstatus.should == 0
     should_be_installed "rack 1.0"
   end
 
   it "still works if you are not in the app directory and specify --gemfile" do
-    bundle "install"
+    fundle "install"
     Dir.chdir tmp
     simulate_new_machine
-    bundle "install --gemfile #{tmp}/bundled_app/Gemfile --deployment"
-    Dir.chdir bundled_app
+    fundle "install --gemfile #{tmp}/fundled_app/Gemfile --deployment"
+    Dir.chdir fundled_app
     should_be_installed "rack 1.0"
   end
 
@@ -41,30 +41,30 @@ describe "install with --deployment or --frozen" do
         gem "foo", :git => "#{lib_path('foo-1.0')}"
       end
     G
-    bundle :install
-    bundle "install --deployment --without test", :exitstatus => true
+    fundle :install
+    fundle "install --deployment --without test", :exitstatus => true
     exitstatus.should == 0
   end
 
-  it "works when you bundle exec bundle" do
-    bundle :install
-    bundle "install --deployment"
-    bundle "exec bundle check", :exitstatus => true
+  it "works when you fundle exec fundle" do
+    fundle :install
+    fundle "install --deployment"
+    fundle "exec fundle check", :exitstatus => true
     exitstatus.should == 0
   end
 
   describe "with an existing lockfile" do
     before do
-      bundle "install"
+      fundle "install"
     end
 
     it "works with the --deployment flag if you didn't change anything" do
-      bundle "install --deployment", :exitstatus => true
+      fundle "install --deployment", :exitstatus => true
       exitstatus.should == 0
     end
 
     it "works with the --frozen flag if you didn't change anything" do
-      bundle "install --frozen", :exitstatus => true
+      fundle "install --frozen", :exitstatus => true
       exitstatus.should == 0
     end
 
@@ -75,7 +75,7 @@ describe "install with --deployment or --frozen" do
         gem "rack-obama"
       G
 
-      bundle "install --deployment"
+      fundle "install --deployment"
       out.should include("You have modified your Gemfile")
       out.should include("You have added to the Gemfile")
       out.should include("* rack-obama")
@@ -91,7 +91,7 @@ describe "install with --deployment or --frozen" do
       G
 
       ENV['BUNDLE_FROZEN'] = '1'
-      bundle "install"
+      fundle "install"
       out.should include("You have modified your Gemfile")
       out.should include("You have added to the Gemfile")
       out.should include("* rack-obama")
@@ -106,7 +106,7 @@ describe "install with --deployment or --frozen" do
         gem "rack-obama"
       G
 
-      bundle "install --frozen"
+      fundle "install --frozen"
       out.should include("You have modified your Gemfile")
       out.should include("You have added to the Gemfile")
       out.should include("* rack-obama")
@@ -120,7 +120,7 @@ describe "install with --deployment or --frozen" do
         gem "activesupport"
       G
 
-      bundle "install --deployment"
+      fundle "install --deployment"
       out.should include("You have modified your Gemfile")
       out.should include("You have added to the Gemfile:\n* activesupport\n\n")
       out.should include("You have deleted from the Gemfile:\n* rack")
@@ -133,7 +133,7 @@ describe "install with --deployment or --frozen" do
         gem "rack", :git => "git://hubz.com"
       G
 
-      bundle "install --deployment"
+      fundle "install --deployment"
       out.should include("You have modified your Gemfile")
       out.should include("You have added to the Gemfile:\n* source: git://hubz.com (at master)")
       out.should_not include("You have changed in the Gemfile")
@@ -152,7 +152,7 @@ describe "install with --deployment or --frozen" do
         gem "rack"
       G
 
-      bundle "install --deployment"
+      fundle "install --deployment"
       out.should include("You have modified your Gemfile")
       out.should include("You have deleted from the Gemfile:\n* source: #{lib_path("rack-1.0")} (at master)")
       out.should_not include("You have added to the Gemfile")
@@ -175,15 +175,15 @@ describe "install with --deployment or --frozen" do
         gem "foo", :git => "#{lib_path("rack")}"
       G
 
-      bundle "install --deployment"
+      fundle "install --deployment"
       out.should include("You have modified your Gemfile")
       out.should include("You have changed in the Gemfile:\n* rack from `no specified source` to `#{lib_path("rack")} (at master)`")
       out.should_not include("You have added to the Gemfile")
       out.should_not include("You have deleted from the Gemfile")
     end
 
-    it "remembers that the bundle is frozen at runtime" do
-      bundle "install --deployment"
+    it "remembers that the fundle is frozen at runtime" do
+      fundle "install --deployment"
 
       gemfile <<-G
         source "file://#{gem_repo1}"

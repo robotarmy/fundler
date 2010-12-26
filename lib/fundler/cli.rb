@@ -27,17 +27,17 @@ module Fundler
     def help(cli = nil)
       case cli
       when "gemfile" then command = "gemfile.5"
-      when nil       then command = "bundle"
-      else command = "bundle-#{cli}"
+      when nil       then command = "fundle"
+      else command = "fundle-#{cli}"
       end
 
       manpages = %w(
-          bundle
-          bundle-config
-          bundle-exec
-          bundle-install
-          bundle-package
-          bundle-update
+          fundle
+          fundle-config
+          fundle-exec
+          fundle-install
+          fundle-package
+          fundle-update
           gemfile.5)
 
       if manpages.include?(command)
@@ -102,14 +102,14 @@ module Fundler
         not_installed = Fundler.definition.missing_specs
       rescue GemNotFound, VersionConflict
         Fundler.ui.error "Your Gemfile's dependencies could not be satisfied"
-        Fundler.ui.warn  "Install missing gems with `bundle install`"
+        Fundler.ui.warn  "Install missing gems with `fundle install`"
         exit 1
       end
 
       if not_installed.any?
         Fundler.ui.error "The following gems are missing"
         not_installed.each { |s| Fundler.ui.error " * #{s.name} (#{s.version})" }
-        Fundler.ui.warn "Install missing gems with `bundle install`"
+        Fundler.ui.warn "Install missing gems with `fundle install`"
         exit 1
       else
         Fundler.load.lock
@@ -119,14 +119,14 @@ module Fundler
 
     desc "install", "Install the current environment to the system"
     long_desc <<-D
-      Install will install all of the gems in the current bundle, making them available
+      Install will install all of the gems in the current fundle, making them available
       for use. In a freshly checked out repository, this command will give you the same
-      gem versions as the last person who updated the Gemfile and ran `bundle update`.
+      gem versions as the last person who updated the Gemfile and ran `fundle update`.
 
       Passing [DIR] to install (e.g. vendor) will cause the unpacked gems to be installed
       into the [DIR] directory rather than into system gems.
 
-      If the bundle has already been installed, fundler will tell you so and then exit.
+      If the fundle has already been installed, fundler will tell you so and then exit.
     D
     method_option "without", :type => :array, :banner =>
       "Exclude gems that are part of the specified named group."
@@ -143,11 +143,11 @@ module Fundler
     method_option "local", :type => :boolean, :banner =>
       "Do not attempt to fetch gems remotely and use the gem cache instead"
     method_option "binstubs", :type => :string, :lazy_default => "bin", :banner =>
-      "Generate bin stubs for bundled gems to ./bin"
+      "Generate bin stubs for fundled gems to ./bin"
     method_option "path", :type => :string, :banner =>
       "Specify a different path than the system default ($BUNDLE_PATH or $GEM_HOME). Fundler will remember this value for future installs on this machine"
     method_option "system", :type => :boolean, :banner =>
-      "Install to the system location ($BUNDLE_PATH or $GEM_HOME) even if the bundle was previously installed somewhere else for this application"
+      "Install to the system location ($BUNDLE_PATH or $GEM_HOME) even if the fundle was previously installed somewhere else for this application"
     method_option "frozen", :type => :boolean, :banner =>
       "Do not allow the Gemfile.lock to be updated after this install"
     method_option "deployment", :type => :boolean, :banner =>
@@ -182,16 +182,16 @@ module Fundler
       end
 
       if path && opts[:path]
-        Fundler.ui.error "You have specified a path via `bundle install #{path}` as well as\n" \
-                         "by `bundle install --path #{options[:path]}`. These options are\n" \
+        Fundler.ui.error "You have specified a path via `fundle install #{path}` as well as\n" \
+                         "by `fundle install --path #{options[:path]}`. These options are\n" \
                          "equivalent, so please use one or the other."
         exit 1
       end
 
       if opts["disable-shared-gems"]
         Fundler.ui.error "The disable-shared-gem option is no longer available.\n\n" \
-                         "Instead, use `bundle install` to install to your system,\n" \
-                         "or `bundle install --path path/to/gems` to install to an isolated\n" \
+                         "Instead, use `fundle install` to install to your system,\n" \
+                         "or `fundle install --path path/to/gems` to install to an isolated\n" \
                          "location. Fundler will resolve relative paths relative to\n" \
                          "your `Gemfile`."
         exit 1
@@ -214,7 +214,7 @@ module Fundler
 
       # Can't use Fundler.settings for this because settings needs gemfile.dirname
       Fundler.settings[:path] = nil if opts[:system]
-      Fundler.settings[:path] = "vendor/bundle" if opts[:deployment]
+      Fundler.settings[:path] = "vendor/fundle" if opts[:deployment]
       Fundler.settings[:path] = path if path
       Fundler.settings[:path] = opts[:path] if opts[:path]
       Fundler.settings[:bin] = opts["binstubs"] if opts[:binstubs]
@@ -228,17 +228,17 @@ module Fundler
       if Fundler.settings[:path]
         relative_path = Fundler.settings[:path]
         relative_path = "./" + relative_path unless relative_path[0] == ?/
-        Fundler.ui.confirm "Your bundle is complete! " +
+        Fundler.ui.confirm "Your fundle is complete! " +
           "It was installed into #{relative_path}"
       else
-        Fundler.ui.confirm "Your bundle is complete! " +
-          "Use `bundle show [gemname]` to see where a bundled gem is installed."
+        Fundler.ui.confirm "Your fundle is complete! " +
+          "Use `fundle show [gemname]` to see where a fundled gem is installed."
       end
 
       if path
-        Fundler.ui.warn "The path argument to `bundle install` is deprecated. " +
+        Fundler.ui.warn "The path argument to `fundle install` is deprecated. " +
           "It will be removed in version 1.1. " +
-          "Please use `bundle install --path #{path}` instead."
+          "Please use `fundle install --path #{path}` instead."
       end
     rescue GemNotFound => e
       if opts[:local]
@@ -255,7 +255,7 @@ module Fundler
     long_desc <<-D
       Update will install the newest versions of the gems listed in the Gemfile. Use
       update when you have changed the Gemfile, or if you want to get the newest
-      possible versions of the gems in the bundle.
+      possible versions of the gems in the fundle.
     D
     method_option "source", :type => :array, :banner => "Update a specific source (and all gems associated with it)"
     def update(*gems)
@@ -270,21 +270,21 @@ module Fundler
 
       Installer.install Fundler.root, Fundler.definition, "update" => true
       Fundler.load.cache if Fundler.root.join("vendor/cache").exist?
-      Fundler.ui.confirm "Your bundle is updated! " +
-        "Use `bundle show [gemname]` to see where a bundled gem is installed."
+      Fundler.ui.confirm "Your fundle is updated! " +
+        "Use `fundle show [gemname]` to see where a fundled gem is installed."
     end
 
-    desc "lock", "Locks the bundle to the current set of dependencies, including all child dependencies."
+    desc "lock", "Locks the fundle to the current set of dependencies, including all child dependencies."
     def lock
-      Fundler.ui.warn "Lock is deprecated. Your bundle is now locked whenever you run `bundle install`."
+      Fundler.ui.warn "Lock is deprecated. Your fundle is now locked whenever you run `fundle install`."
     end
 
-    desc "unlock", "Unlock the bundle. This allows gem versions to be changed."
+    desc "unlock", "Unlock the fundle. This allows gem versions to be changed."
     def unlock
-      Fundler.ui.warn "Unlock is deprecated. To update to newer gem versions, use `bundle update`."
+      Fundler.ui.warn "Unlock is deprecated. To update to newer gem versions, use `fundle update`."
     end
 
-    desc "show [GEM]", "Shows all gems that are part of the bundle, or the path to a given gem"
+    desc "show [GEM]", "Shows all gems that are part of the fundle, or the path to a given gem"
     long_desc <<-D
       Show lists the names and versions of all gems that are required by your Gemfile.
       Calling show with [GEM] will list the exact location of that gem on your machine.
@@ -295,7 +295,7 @@ module Fundler
       if gem_name
         Fundler.ui.info locate_gem(gem_name)
       else
-        Fundler.ui.info "Gems included by the bundle:"
+        Fundler.ui.info "Gems included by the fundle:"
         Fundler.load.specs.sort_by { |s| s.name }.each do |s|
           Fundler.ui.info "  * #{s.name} (#{s.version}#{s.git_version})"
         end
@@ -312,29 +312,29 @@ module Fundler
       Fundler.load.lock
     rescue GemNotFound => e
       Fundler.ui.error(e.message)
-      Fundler.ui.warn "Run `bundle install` to install missing gems."
+      Fundler.ui.warn "Run `fundle install` to install missing gems."
       exit 128
     end
 
     desc "package", "Locks and then caches all of the gems into vendor/cache"
     method_option "no-prune",  :type => :boolean, :banner => "Don't remove stale gems from the cache."
     long_desc <<-D
-      The package command will copy the .gem files for every gem in the bundle into the
+      The package command will copy the .gem files for every gem in the fundle into the
       directory ./vendor/cache. If you then check that directory into your source
       control repository, others who check out your source will be able to install the
-      bundle without having to download any additional gems.
+      fundle without having to download any additional gems.
     D
     def package
       install
-      # TODO: move cache contents here now that all bundles are locked
+      # TODO: move cache contents here now that all fundles are locked
       Fundler.load.cache
     end
     map %w(pack) => :package
 
-    desc "exec", "Run the command in context of the bundle"
+    desc "exec", "Run the command in context of the fundle"
     long_desc <<-D
-      Exec runs a command, providing it access to the gems in the bundle. While using
-      bundle exec you can require and call the bundled gems as if they were installed
+      Exec runs a command, providing it access to the gems in the fundle. While using
+      fundle exec you can require and call the fundled gems as if they were installed
       into the systemwide Rubygems repository.
     D
     def exec(*)
@@ -350,7 +350,7 @@ module Fundler
         exit 126
       rescue Errno::ENOENT
         Fundler.ui.error "fundler: command not found: #{ARGV.first}"
-        Fundler.ui.warn  "Install missing gem binaries with `bundle install`"
+        Fundler.ui.warn  "Install missing gem binaries with `fundle install`"
         exit 127
       end
     end
@@ -413,7 +413,7 @@ module Fundler
       end
     end
 
-    desc "open GEM", "Opens the source directory of the given bundled gem"
+    desc "open GEM", "Opens the source directory of the given fundled gem"
     def open(name)
       editor = [ENV['BUNDLER_EDITOR'], ENV['VISUAL'], ENV['EDITOR']].find{|e| !e.nil? && !e.empty? }
       if editor
@@ -424,11 +424,11 @@ module Fundler
           Fundler.ui.info "Could not run '#{command}'" unless success
         end
       else
-        Fundler.ui.info("To open a bundled gem, set $EDITOR or $BUNDLER_EDITOR")
+        Fundler.ui.info("To open a fundled gem, set $EDITOR or $BUNDLER_EDITOR")
       end
     end
 
-    desc "console [GROUP]", "Opens an IRB session with the bundle pre-loaded"
+    desc "console [GROUP]", "Opens an IRB session with the fundle pre-loaded"
     def console(group = nil)
       require 'fundler/setup'
       group ? Fundler.require(:default, group) : Fundler.require
@@ -448,7 +448,7 @@ module Fundler
     long_desc <<-D
       Viz generates a PNG file of the current Gemfile as a dependency graph.
       Viz requires the ruby-graphviz gem (and its dependencies).
-      The associated gems must also be installed via 'bundle install'.
+      The associated gems must also be installed via 'fundle install'.
     D
     method_option :file, :type => :string, :default => 'gem_graph.png', :aliases => '-f', :banner => "The name to use for the generated png file."
     method_option :version, :type => :boolean, :default => false, :aliases => '-v', :banner => "Set to show each gem version."
@@ -508,7 +508,7 @@ module Fundler
 
     def locate_gem(name)
       spec = Fundler.load.specs.find{|s| s.name == name }
-      raise GemNotFound, "Could not find gem '#{name}' in the current bundle." unless spec
+      raise GemNotFound, "Could not find gem '#{name}' in the current fundle." unless spec
       if spec.name == 'fundler'
         return File.expand_path('../../../', __FILE__)
       end

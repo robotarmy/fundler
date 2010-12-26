@@ -159,7 +159,7 @@ module Fundler
     deprecate :disable_system_gems
     deprecate :disable_rubygems
     deprecate :clear_sources
-    deprecate :bundle_path
+    deprecate :fundle_path
     deprecate :bin_path
 
   private

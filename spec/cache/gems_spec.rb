@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle cache" do
+describe "fundle cache" do
 
   describe "when there are only gemsources" do
     before :each do
@@ -9,15 +9,15 @@ describe "bundle cache" do
       G
 
       system_gems "rack-1.0.0"
-      bundle :cache
+      fundle :cache
     end
 
     it "copies the .gem file to vendor/cache" do
-      bundled_app("vendor/cache/rack-1.0.0.gem").should exist
+      fundled_app("vendor/cache/rack-1.0.0.gem").should exist
     end
 
     it "uses the cache as a source when installing gems" do
-      build_gem "omg", :path => bundled_app('vendor/cache')
+      build_gem "omg", :path => fundled_app('vendor/cache')
 
       install_gemfile <<-G
         source "file://#{gem_repo1}"
@@ -29,13 +29,13 @@ describe "bundle cache" do
 
     it "uses the cache as a source when installing gems with --local" do
       system_gems []
-      bundle "install --local"
+      fundle "install --local"
 
       should_be_installed("rack 1.0.0")
     end
 
     it "does not reinstall gems from the cache if they exist on the system" do
-      build_gem "rack", "1.0.0", :path => bundled_app('vendor/cache') do |s|
+      build_gem "rack", "1.0.0", :path => fundled_app('vendor/cache') do |s|
         s.write "lib/rack.rb", "RACK = 'FAIL'"
       end
 
@@ -46,18 +46,18 @@ describe "bundle cache" do
       should_be_installed("rack 1.0.0")
     end
 
-    it "does not reinstall gems from the cache if they exist in the bundle" do
+    it "does not reinstall gems from the cache if they exist in the fundle" do
       system_gems "rack-1.0.0"
 
       gemfile <<-G
         gem "rack"
       G
 
-      build_gem "rack", "1.0.0", :path => bundled_app('vendor/cache') do |s|
+      build_gem "rack", "1.0.0", :path => fundled_app('vendor/cache') do |s|
         s.write "lib/rack.rb", "RACK = 'FAIL'"
       end
 
-      bundle "install --local"
+      fundle "install --local"
       should_be_installed("rack 1.0.0")
     end
 
@@ -68,9 +68,9 @@ describe "bundle cache" do
         gem "rack"
       G
 
-      bundle "cache"
+      fundle "cache"
 
-      bundled_app("Gemfile.lock").should exist
+      fundled_app("Gemfile.lock").should exist
     end
   end
 
@@ -89,20 +89,20 @@ describe "bundle cache" do
     end
 
     it "still works" do
-      bundle :cache
+      fundle :cache
 
       system_gems []
-      bundle "install --local"
+      fundle "install --local"
 
       should_be_installed("rack 1.0.0", "foo 1.0")
     end
 
     it "should not explode if the lockfile is not present" do
-      FileUtils.rm(bundled_app("Gemfile.lock"))
+      FileUtils.rm(fundled_app("Gemfile.lock"))
 
-      bundle :cache
+      fundle :cache
 
-      bundled_app("Gemfile.lock").should exist
+      fundled_app("Gemfile.lock").should exist
     end
   end
 
@@ -114,7 +114,7 @@ describe "bundle cache" do
         gem "rack"
         gem "actionpack"
       G
-      bundle :cache
+      fundle :cache
       cached_gem("rack-1.0.0").should exist
       cached_gem("actionpack-2.3.2").should exist
       cached_gem("activesupport-2.3.2").should exist
@@ -122,14 +122,14 @@ describe "bundle cache" do
 
     it "re-caches during install" do
       cached_gem("rack-1.0.0").rmtree
-      bundle :install
+      fundle :install
       out.should include("Updating .gem files in vendor/cache")
       cached_gem("rack-1.0.0").should exist
     end
 
     it "adds and removes when gems are updated" do
       update_repo2
-      bundle 'update'
+      fundle 'update'
       cached_gem("rack-1.2").should exist
       cached_gem("rack-1.0.0").should_not exist
     end
@@ -174,7 +174,7 @@ describe "bundle cache" do
           gem "platform_specific"
         G
 
-        bundle :cache
+        fundle :cache
         cached_gem("platform_specific-1.0-java").should exist
       end
 
@@ -191,18 +191,18 @@ describe "bundle cache" do
     it "doesn't remove gems with mismatched :rubygems_version or :date" do
       cached_gem("rack-1.0.0").rmtree
       build_gem "rack", "1.0.0",
-        :path => bundled_app('vendor/cache'),
+        :path => fundled_app('vendor/cache'),
         :rubygems_version => "1.3.2"
       simulate_new_machine
 
-      bundle :install
+      fundle :install
       cached_gem("rack-1.0.0").should exist
     end
 
     it "handles directories and non .gem files in the cache" do
-      bundled_app("vendor/cache/foo").mkdir
-      File.open(bundled_app("vendor/cache/bar"), 'w'){|f| f.write("not a gem") }
-      bundle :cache
+      fundled_app("vendor/cache/foo").mkdir
+      File.open(fundled_app("vendor/cache/bar"), 'w'){|f| f.write("not a gem") }
+      fundle :cache
     end
 
     it "does not say that it is removing gems when it isn't actually doing so" do
@@ -210,8 +210,8 @@ describe "bundle cache" do
         source "file://#{gem_repo1}"
         gem "rack"
       G
-      bundle "cache"
-      bundle "install"
+      fundle "cache"
+      fundle "install"
       out.should_not =~ /removing/i
     end
   end

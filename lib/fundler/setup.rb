@@ -1,6 +1,6 @@
 require 'fundler/shared_helpers'
 
-if Fundler::SharedHelpers.in_bundle?
+if Fundler::SharedHelpers.in_fundle?
   require 'fundler'
   begin
     Fundler.setup

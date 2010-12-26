@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle install with explicit source paths" do
+describe "fundle install with explicit source paths" do
   it "fetches gems" do
     build_lib "foo"
 
@@ -47,26 +47,26 @@ describe "bundle install with explicit source paths" do
   end
 
   it "expands paths relative to Fundler.root" do
-    build_lib "foo", :path => bundled_app("foo-1.0")
+    build_lib "foo", :path => fundled_app("foo-1.0")
 
     install_gemfile <<-G
       gem 'foo', :path => "./foo-1.0"
     G
 
-    bundled_app("subdir").mkpath
-    Dir.chdir(bundled_app("subdir")) do
+    fundled_app("subdir").mkpath
+    Dir.chdir(fundled_app("subdir")) do
       should_be_installed("foo 1.0")
     end
   end
 
   it "expands paths when comparing locked paths to Gemfile paths" do
-    build_lib "foo", :path => bundled_app("foo-1.0")
+    build_lib "foo", :path => fundled_app("foo-1.0")
 
     install_gemfile <<-G
       gem 'foo', :path => File.expand_path("../foo-1.0", __FILE__)
     G
 
-    bundle "install --frozen", :exitstatus => true
+    fundle "install --frozen", :exitstatus => true
     exitstatus.should == 0
   end
 
@@ -121,7 +121,7 @@ describe "bundle install with explicit source paths" do
     File.open(lib_path("foo/Gemfile"), "w") {|f| f.puts gemfile }
 
     Dir.chdir(lib_path("foo")) do
-      bundle "install"
+      fundle "install"
       should_be_installed "foo 1.0"
       should_be_installed "rack 1.0"
     end
@@ -178,7 +178,7 @@ describe "bundle install with explicit source paths" do
       gem 'foo'
     G
 
-    bundle "exec foobar"
+    fundle "exec foobar"
     out.should == "1.0"
   end
 
@@ -244,7 +244,7 @@ describe "bundle install with explicit source paths" do
       gem "foo", :path => "#{lib_path('foo-1.0')}"
     G
 
-    bundle "exec foo"
+    fundle "exec foo"
     out.should == "1.0"
   end
 
@@ -265,7 +265,7 @@ describe "bundle install with explicit source paths" do
         s.add_dependency "bar"
       end
 
-      bundle "install"
+      fundle "install"
 
       should_be_installed "foo 2.0", "bar 1.0"
     end
@@ -273,7 +273,7 @@ describe "bundle install with explicit source paths" do
     it "unlocks all gems when a child dependency gem is updated" do
       build_lib "bar", "2.0", :path => lib_path("foo/bar")
 
-      bundle "install"
+      fundle "install"
 
       should_be_installed "foo 1.0", "bar 2.0"
     end
@@ -294,7 +294,7 @@ describe "bundle install with explicit source paths" do
         s.add_dependency "rack"
       end
 
-      bundle "install"
+      fundle "install"
 
       should_be_installed "rack 1.0.0"
     end

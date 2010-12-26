@@ -79,22 +79,22 @@ The Fundler runtime allows its two main methods, `Fundler.setup` and
     Fundler.require(:default, :test) # requires the _default_ and _test_ groups
     Fundler.require(:test)           # requires just the _test_ group
 
-The Fundler CLI allows you to specify a list of groups whose gems `bundle install` should
+The Fundler CLI allows you to specify a list of groups whose gems `fundle install` should
 not install with the `--without` option. To specify multiple groups to ignore, specify a
 list of groups separated by spaces.
 
-    bundle install --without test
-    bundle install --without development test
+    fundle install --without test
+    fundle install --without development test
 
-After running `bundle install --without test`, fundler will remember that you excluded
-the test group in the last installation. The next time you run `bundle install`,
+After running `fundle install --without test`, fundler will remember that you excluded
+the test group in the last installation. The next time you run `fundle install`,
 without any `--without option`, fundler will recall it.
 
 Also, calling `Fundler.setup` with no parameters, or calling `require "fundler/setup"`
 will setup all groups except for the ones you excluded via `--without` (since they
 are obviously not available).
 
-Note that on `bundle install`, fundler downloads and evaluates all gems, in order to
+Note that on `fundle install`, fundler downloads and evaluates all gems, in order to
 create a single canonical list of all of the required gems and their dependencies.
 This means that you cannot list different versions of the same gems in different
 groups. For more details, see [Understanding Fundler](http://gemfundler.com/rationale.html).
@@ -137,7 +137,7 @@ As with groups, you can specify one or more platforms:
     gem "ruby-debug", :platforms => :mri_18
     gem "nokogiri",   :platforms => [:mri_18, :jruby]
 
-All operations involving groups (`bundle install`, `Fundler.setup`,
+All operations involving groups (`fundle install`, `Fundler.setup`,
 `Fundler.require`) behave exactly the same as if any groups not
 matching the current platform were explicitly excluded.
 
@@ -146,7 +146,7 @@ matching the current platform were explicitly excluded.
 If necessary, you can specify that a gem is located at a particular
 git repository. The repository can be public (`http://github.com/rails/rails.git`)
 or private (`git@github.com:rails/rails.git`). If the repository is private,
-the user that you use to run `bundle install` `MUST` have the appropriate
+the user that you use to run `fundle install` `MUST` have the appropriate
 keys available in their `$HOME/.ssh`.
 
 Git repositories are specified using the `:git` parameter. The `group`,
@@ -172,7 +172,7 @@ only valid if the `.gemspec` specifies a version matching the version
 specifier. If not, fundler will print a warning.
 
     gem "rails", "2.3.8", :git => "git://github.com/rails/rails.git"
-    # bundle install will fail, because the .gemspec in the rails
+    # fundle install will fail, because the .gemspec in the rails
     # repository's master branch specifies version 3.0.0
 
 If a git repository does `not` have a `.gemspec` for the gem you attached

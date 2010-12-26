@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle exec" do
+describe "fundle exec" do
   before :each do
     system_gems "rack-1.0.0", "rack-0.9.1"
   end
@@ -10,16 +10,16 @@ describe "bundle exec" do
       gem "rack", "0.9.1"
     G
 
-    bundle "exec rackup"
+    fundle "exec rackup"
     out.should == "0.9.1"
   end
 
-  it "works when the bins are in ~/.bundle" do
+  it "works when the bins are in ~/.fundle" do
     install_gemfile <<-G
       gem "rack"
     G
 
-    bundle "exec rackup"
+    fundle "exec rackup"
     out.should == "1.0.0"
   end
 
@@ -28,12 +28,12 @@ describe "bundle exec" do
       gem "rack"
     G
 
-    bundle "exec 'cd #{tmp('gems')} && rackup'"
+    fundle "exec 'cd #{tmp('gems')} && rackup'"
 
     out.should == "1.0.0"
   end
 
-  it "handles different versions in different bundles" do
+  it "handles different versions in different fundles" do
     build_repo2 do
       build_gem "rack_two", "1.0.0" do |s|
         s.executables = "rackup"
@@ -45,19 +45,19 @@ describe "bundle exec" do
       gem "rack", "0.9.1"
     G
 
-    Dir.chdir bundled_app2 do
-      install_gemfile bundled_app2('Gemfile'), <<-G
+    Dir.chdir fundled_app2 do
+      install_gemfile fundled_app2('Gemfile'), <<-G
         source "file://#{gem_repo2}"
         gem "rack_two", "1.0.0"
       G
     end
 
-    bundle "exec rackup"
+    fundle "exec rackup"
 
     check out.should == "0.9.1"
 
-    Dir.chdir bundled_app2 do
-      bundle "exec rackup"
+    Dir.chdir fundled_app2 do
+      fundle "exec rackup"
       out.should == "1.0.0"
     end
   end
@@ -72,7 +72,7 @@ describe "bundle exec" do
       end
     G
 
-    bundle "exec rackup"
+    fundle "exec rackup"
 
     check out.should == "0.9.1"
     should_not_be_installed "rack_middleware 1.0"
@@ -85,10 +85,10 @@ describe "bundle exec" do
 
     rubyopt = "-I#{fundler_path} -rfundler/setup"
 
-    bundle "exec 'echo $RUBYOPT'"
+    fundle "exec 'echo $RUBYOPT'"
     out.should have_rubyopts(rubyopt)
 
-    bundle "exec 'echo $RUBYOPT'", :env => {"RUBYOPT" => rubyopt}
+    fundle "exec 'echo $RUBYOPT'", :env => {"RUBYOPT" => rubyopt}
     out.should have_rubyopts(rubyopt)
   end
 
@@ -97,10 +97,10 @@ describe "bundle exec" do
       gem "rack"
     G
 
-    bundle "exec foobarbaz", :exitstatus => true
+    fundle "exec foobarbaz", :exitstatus => true
     check exitstatus.should == 127
     out.should include("fundler: command not found: foobarbaz")
-    out.should include("Install missing gem binaries with `bundle install`")
+    out.should include("Install missing gem binaries with `fundle install`")
   end
 
   it "errors nicely when the argument is not executable" do
@@ -108,8 +108,8 @@ describe "bundle exec" do
       gem "rack"
     G
 
-    bundle "exec touch foo"
-    bundle "exec ./foo", :exitstatus => true
+    fundle "exec touch foo"
+    fundle "exec ./foo", :exitstatus => true
     check exitstatus.should == 126
     out.should include("fundler: not executable: ./foo")
   end
@@ -123,19 +123,19 @@ describe "bundle exec" do
       end
 
       it "works when unlocked" do
-        bundle "exec 'cd #{tmp('gems')} && rackup'"
+        fundle "exec 'cd #{tmp('gems')} && rackup'"
         out.should == "1.0.0"
       end
 
       it "works when locked" do
-        bundle "lock"
+        fundle "lock"
         should_be_locked
-        bundle "exec 'cd #{tmp('gems')} && rackup'"
+        fundle "exec 'cd #{tmp('gems')} && rackup'"
         out.should == "1.0.0"
       end
     end
 
-    describe "from gems bundled via :path" do
+    describe "from gems fundled via :path" do
       before(:each) do
         build_lib "fizz", :path => home("fizz") do |s|
           s.executables = "fizz"
@@ -147,20 +147,20 @@ describe "bundle exec" do
       end
 
       it "works when unlocked" do
-        bundle "exec fizz"
+        fundle "exec fizz"
         out.should == "1.0"
       end
 
       it "works when locked" do
-        bundle "lock"
+        fundle "lock"
         should_be_locked
 
-        bundle "exec fizz"
+        fundle "exec fizz"
         out.should == "1.0"
       end
     end
 
-    describe "from gems bundled via :git" do
+    describe "from gems fundled via :git" do
       before(:each) do
         build_git "fizz_git" do |s|
           s.executables = "fizz_git"
@@ -172,19 +172,19 @@ describe "bundle exec" do
       end
 
       it "works when unlocked" do
-        bundle "exec fizz_git"
+        fundle "exec fizz_git"
         out.should == "1.0"
       end
 
       it "works when locked" do
-        bundle "lock"
+        fundle "lock"
         should_be_locked
-        bundle "exec fizz_git"
+        fundle "exec fizz_git"
         out.should == "1.0"
       end
     end
 
-    describe "from gems bundled via :git with no gemspec" do
+    describe "from gems fundled via :git with no gemspec" do
       before(:each) do
         build_git "fizz_no_gemspec", :gemspec => false do |s|
           s.executables = "fizz_no_gemspec"
@@ -196,14 +196,14 @@ describe "bundle exec" do
       end
 
       it "works when unlocked" do
-        bundle "exec fizz_no_gemspec"
+        fundle "exec fizz_no_gemspec"
         out.should == "1.0"
       end
 
       it "works when locked" do
-        bundle "lock"
+        fundle "lock"
         should_be_locked
-        bundle "exec fizz_no_gemspec"
+        fundle "exec fizz_no_gemspec"
         out.should == "1.0"
       end
     end
@@ -217,11 +217,11 @@ describe "bundle exec" do
         gem "rack"
       G
 
-      bundle "install --path vendor/bundle --disable-shared-gems"
+      fundle "install --path vendor/fundle --disable-shared-gems"
     end
 
     it "does not explode with --disable-shared-gems" do
-      bundle "exec bundle check", :exitstatus => true
+      fundle "exec fundle check", :exitstatus => true
       exitstatus.should == 0
     end
 
@@ -230,7 +230,7 @@ describe "bundle exec" do
         require "rubygems"
         require "fundler"
         Fundler.setup
-        puts `bundle check`
+        puts `fundle check`
         puts $?.exitstatus
       R
 

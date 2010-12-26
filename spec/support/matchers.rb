@@ -64,7 +64,7 @@ module Spec
     end
 
     def should_be_locked
-      bundled_app("Gemfile.lock").should exist
+      fundled_app("Gemfile.lock").should exist
     end
 
     RSpec::Matchers.define :be_with_diff do |expected|
@@ -82,7 +82,7 @@ module Spec
     end
 
     def lockfile_should_be(expected)
-      lock = File.read(bundled_app("Gemfile.lock"))
+      lock = File.read(fundled_app("Gemfile.lock"))
       lock.should be_with_diff(expected)
     end
   end

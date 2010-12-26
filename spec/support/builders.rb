@@ -154,8 +154,8 @@ module Spec
         end
 
         build_gem "fundler", "0.9" do |s|
-          s.executables = "bundle"
-          s.write "bin/bundle", "puts 'FAIL'"
+          s.executables = "fundle"
+          s.write "bin/fundle", "puts 'FAIL'"
         end
 
         # The fundler 0.8 gem has a rubygems plugin that always loads :(

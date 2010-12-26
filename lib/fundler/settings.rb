@@ -106,7 +106,7 @@ module Fundler
     end
 
     def global_config_file
-      file = ENV["BUNDLE_CONFIG"] || File.join(Gem.user_home, ".bundle/config")
+      file = ENV["BUNDLE_CONFIG"] || File.join(Gem.user_home, ".fundle/config")
       Pathname.new(file)
     end
 

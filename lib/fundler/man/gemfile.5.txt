@@ -112,21 +112,21 @@ GEMS (#gem)
 
 
 
-	   bundle install --without test
-	   bundle install --without development test
+	   fundle install --without test
+	   fundle install --without development test
 
 
 
-       After running bundle install --without test, fundler will remember that
+       After running fundle install --without test, fundler will remember that
        you excluded the test group in the last installation. The next time you
-       run  bundle  install, without any --without option, fundler will recall
+       run  fundle  install, without any --without option, fundler will recall
        it.
 
        Also, calling Fundler.setup with  no  parameters,  or  calling  require
        "fundler/setup"	will setup all groups except for the ones you excluded
        via --without (since they are obviously not available).
 
-       Note that on bundle install, fundler downloads and evaluates all  gems,
+       Note that on fundle install, fundler downloads and evaluates all  gems,
        in  order to create a single canonical list of all of the required gems
        and their dependencies. This means that you cannot list different  ver-
        sions  of  the  same  gems  in  different groups. For more details, see
@@ -176,7 +176,7 @@ GEMS (#gem)
 
 
 
-       All   operations   involving  groups  (bundle  install,	Fundler.setup,
+       All   operations   involving  groups  (fundle  install,	Fundler.setup,
        Fundler.require) behave exactly the same as if any groups not  matching
        the current platform were explicitly excluded.
 
@@ -185,7 +185,7 @@ GEMS (#gem)
        repository.	 The	   repository	    can       be	public
        (http://github.com/rails/rails.git)		or	       private
        (git@github.com:rails/rails.git). If the  repository  is  private,  the
-       user  that you use to run bundle install MUST have the appropriate keys
+       user  that you use to run fundle install MUST have the appropriate keys
        available in their $HOME/.ssh.
 
        Git repositories are specified using the  :git  parameter.  The	group,
@@ -218,7 +218,7 @@ GEMS (#gem)
 
 
 	   gem "rails", "2.3.8", :git => "git://github.com/rails/rails.git"
-	   # bundle install will fail, because the .gemspec in the rails
+	   # fundle install will fail, because the .gemspec in the rails
 	   # repository's master branch specifies version 3.0.0
 
 

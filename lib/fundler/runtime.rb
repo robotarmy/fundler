@@ -16,12 +16,12 @@ module Fundler
       # Activate the specs
       specs.each do |spec|
         unless spec.loaded_from
-          raise GemNotFound, "#{spec.full_name} is missing. Run `bundle` to get it."
+          raise GemNotFound, "#{spec.full_name} is missing. Run `fundle` to get it."
         end
 
         if activated_spec = Gem.loaded_specs[spec.name] and activated_spec.version != spec.version
           e = Gem::LoadError.new "You have already activated #{activated_spec.name} #{activated_spec.version}, " \
-                                 "but your Gemfile requires #{spec.name} #{spec.version}. Consider using bundle exec."
+                                 "but your Gemfile requires #{spec.name} #{spec.version}. Consider using fundle exec."
           e.name = spec.name
           e.version_requirement = Gem::Requirement.new(spec.version.to_s)
           raise e
@@ -123,14 +123,14 @@ module Fundler
 
     def setup_environment
       begin
-        ENV["BUNDLE_BIN_PATH"] = Gem.bin_path("fundler", "bundle", VERSION)
+        ENV["BUNDLE_BIN_PATH"] = Gem.bin_path("fundler", "fundle", VERSION)
       rescue Gem::GemNotFoundException
-        ENV["BUNDLE_BIN_PATH"] = File.expand_path("../../../bin/bundle", __FILE__)
+        ENV["BUNDLE_BIN_PATH"] = File.expand_path("../../../bin/fundle", __FILE__)
       end
 
       # Set PATH
       paths = (ENV["PATH"] || "").split(File::PATH_SEPARATOR)
-      paths.unshift "#{Fundler.bundle_path}/bin"
+      paths.unshift "#{Fundler.fundle_path}/bin"
       ENV["PATH"] = paths.uniq.join(File::PATH_SEPARATOR)
 
       # Set BUNDLE_GEMFILE

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle install with gem sources" do
+describe "fundle install with gem sources" do
   describe "when cached and locked" do
     it "does not hit the remote at all" do
       build_repo2
@@ -9,11 +9,11 @@ describe "bundle install with gem sources" do
         gem "rack"
       G
 
-      bundle :pack
+      fundle :pack
       simulate_new_machine
       FileUtils.rm_rf gem_repo2
 
-      bundle "install --local"
+      fundle "install --local"
       should_be_installed "rack 1.0.0"
     end
 
@@ -24,11 +24,11 @@ describe "bundle install with gem sources" do
         gem "rack"
       G
 
-      bundle :pack
+      fundle :pack
       simulate_new_machine
       FileUtils.rm_rf gem_repo2
 
-      bundle "install --deployment"
+      fundle "install --deployment"
       should_be_installed "rack 1.0.0"
     end
 
@@ -37,13 +37,13 @@ describe "bundle install with gem sources" do
         source "file://#{gem_repo1}"
         gem "rack"
       G
-      bundle :pack
+      fundle :pack
 
-      build_gem "rack", "1.0.0", :path => bundled_app('vendor/cache') do |s|
+      build_gem "rack", "1.0.0", :path => fundled_app('vendor/cache') do |s|
         s.write "lib/rack.rb", "raise 'omg'"
       end
 
-      bundle :install
+      fundle :install
       err.should be_empty
       should_be_installed "rack 1.0"
     end
@@ -54,7 +54,7 @@ describe "bundle install with gem sources" do
           source "file://#{gem_repo1}"
           gem "platform_specific"
         G
-        bundle :pack
+        fundle :pack
       end
 
       simulate_new_machine

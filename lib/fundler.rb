@@ -65,7 +65,7 @@ module Fundler
   class InvalidSpecSet < StandardError; end
 
   class << self
-    attr_writer :ui, :bundle_path
+    attr_writer :ui, :fundle_path
 
     def configure
       @configured ||= begin
@@ -78,9 +78,9 @@ module Fundler
       @ui ||= UI.new
     end
 
-    def bundle_path
+    def fundle_path
       # STDERR.puts settings.path
-      @bundle_path ||= Pathname.new(settings.path).expand_path(root)
+      @fundle_path ||= Pathname.new(settings.path).expand_path(root)
     end
 
     def bin_path
@@ -133,12 +133,12 @@ module Fundler
       "#{Gem.ruby_engine}/#{Gem::ConfigMap[:ruby_version]}"
     end
 
-    def user_bundle_path
+    def user_fundle_path
       Pathname.new(Gem.user_home).join(".fundler")
     end
 
     def home
-      bundle_path.join("fundler")
+      fundle_path.join("fundler")
     end
 
     def install_path
@@ -146,11 +146,11 @@ module Fundler
     end
 
     def specs_path
-      bundle_path.join("specifications")
+      fundle_path.join("specifications")
     end
 
     def cache
-      bundle_path.join("cache/fundler")
+      fundle_path.join("cache/fundler")
     end
 
     def root
@@ -160,7 +160,7 @@ module Fundler
     def app_config_path
       ENV['BUNDLE_APP_CONFIG'] ?
         Pathname.new(ENV['BUNDLE_APP_CONFIG']).expand_path(root) :
-        root.join('.bundle')
+        root.join('.fundle')
     end
 
     def app_cache
@@ -168,7 +168,7 @@ module Fundler
     end
 
     def tmp
-      user_bundle_path.join("tmp", Process.pid.to_s)
+      user_fundle_path.join("tmp", Process.pid.to_s)
     end
 
     def settings
@@ -176,11 +176,11 @@ module Fundler
     end
 
     def with_clean_env
-      bundled_env = ENV.to_hash
+      fundled_env = ENV.to_hash
       ENV.replace(ORIGINAL_ENV)
       yield
     ensure
-      ENV.replace(bundled_env.to_hash)
+      ENV.replace(fundled_env.to_hash)
     end
 
     def default_gemfile
@@ -194,7 +194,7 @@ module Fundler
     def requires_sudo?
       return @requires_sudo if @checked_for_sudo
 
-      path = bundle_path
+      path = fundle_path
       path = path.parent until path.exist?
       sudo_present = !(`which sudo` rescue '').empty?
 
@@ -211,7 +211,7 @@ module Fundler
     end
 
     def sudo(str)
-      `sudo -p 'Enter your password to install the bundled RubyGems to your system: ' #{str}`
+      `sudo -p 'Enter your password to install the fundled RubyGems to your system: ' #{str}`
     end
 
     def read_file(file)
@@ -249,14 +249,14 @@ module Fundler
     def configure_gem_home_and_path
       if settings[:disable_shared_gems]
         ENV['GEM_PATH'] = ''
-        ENV['GEM_HOME'] = File.expand_path(bundle_path, root)
-      elsif Gem.dir != bundle_path.to_s
+        ENV['GEM_HOME'] = File.expand_path(fundle_path, root)
+      elsif Gem.dir != fundle_path.to_s
         paths = [Gem.dir, Gem.path].flatten.compact.uniq.reject{|p| p.empty? }
         ENV["GEM_PATH"] = paths.join(File::PATH_SEPARATOR)
-        ENV["GEM_HOME"] = bundle_path.to_s
+        ENV["GEM_HOME"] = fundle_path.to_s
       end
 
-      FileUtils.mkdir_p bundle_path.to_s
+      FileUtils.mkdir_p fundle_path.to_s
       Gem.clear_paths
     end
 

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle install from an existing gemspec" do
+describe "fundle install from an existing gemspec" do
 
   before(:each) do
     build_gem "bar", :to_system => true

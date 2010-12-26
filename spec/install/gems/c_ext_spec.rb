@@ -7,7 +7,7 @@ describe "installing a gem with C extensions" do
         s.extensions = ["ext/extconf.rb"]
         s.write "ext/extconf.rb", <<-E
           require "mkmf"
-          name = "c_extension_bundle"
+          name = "c_extension_fundle"
           dir_config(name)
           raise "OMG" unless with_config("c_extension") == "hello"
           create_makefile(name)
@@ -20,14 +20,14 @@ describe "installing a gem with C extensions" do
             return Qtrue;
           }
 
-          void Init_c_extension_bundle() {
+          void Init_c_extension_fundle() {
             VALUE c_Extension = rb_define_class("CExtension", rb_cObject);
             rb_define_method(c_Extension, "its_true", c_extension_true, 0);
           }
         C
 
         s.write "lib/c_extension.rb", <<-C
-          require "c_extension_bundle"
+          require "c_extension_fundle"
         C
       end
     end
@@ -37,8 +37,8 @@ describe "installing a gem with C extensions" do
       gem "c_extension"
     G
 
-    bundle "config build.c_extension --with-c_extension=hello"
-    bundle "install"
+    fundle "config build.c_extension --with-c_extension=hello"
+    fundle "install"
 
     out.should_not include("extconf.rb failed")
 

@@ -4,22 +4,22 @@ require 'fundler/gem_helper'
 describe "Fundler::GemHelper tasks" do
   context "determining gemspec" do
     it "interpolates the name when there is only one gemspec" do
-      bundle 'gem test'
-      app = bundled_app("test")
+      fundle 'gem test'
+      app = fundled_app("test")
       helper = Fundler::GemHelper.new(app.to_s)
       helper.gemspec.name.should == 'test'
     end
 
     it "should fail when there is no gemspec" do
-      bundle 'gem test'
-      app = bundled_app("test")
+      fundle 'gem test'
+      app = fundled_app("test")
       FileUtils.rm(File.join(app.to_s, 'test.gemspec'))
       proc { Fundler::GemHelper.new(app.to_s) }.should raise_error(/Unable to determine name/)
     end
 
     it "should fail when there are two gemspecs and the name isn't specified" do
-      bundle 'gem test'
-      app = bundled_app("test")
+      fundle 'gem test'
+      app = fundled_app("test")
       File.open(File.join(app.to_s, 'test2.gemspec'), 'w') {|f| f << ''}
       proc { Fundler::GemHelper.new(app.to_s) }.should raise_error(/Unable to determine name/)
     end
@@ -35,8 +35,8 @@ describe "Fundler::GemHelper tasks" do
     end
 
     before(:each) do
-      bundle 'gem test'
-      @app = bundled_app("test")
+      fundle 'gem test'
+      @app = fundled_app("test")
       @gemspec = File.read("#{@app.to_s}/test.gemspec")
       File.open("#{@app.to_s}/test.gemspec", 'w'){|f| f << @gemspec.gsub('TODO: ', '') }
       @helper = Fundler::GemHelper.new(@app.to_s)
@@ -50,7 +50,7 @@ describe "Fundler::GemHelper tasks" do
       it "builds" do
         mock_build_message
         @helper.build_gem
-        bundled_app('test/pkg/test-0.0.1.gem').should exist
+        fundled_app('test/pkg/test-0.0.1.gem').should exist
       end
 
       it "raises an appropriate error when the build fails" do
@@ -65,7 +65,7 @@ describe "Fundler::GemHelper tasks" do
         mock_build_message
         mock_confirm_message "test (0.0.1) installed"
         @helper.install_gem
-        bundled_app('test/pkg/test-0.0.1.gem').should exist
+        fundled_app('test/pkg/test-0.0.1.gem').should exist
         %x{gem list}.should include("test (0.0.1)")
       end
 
@@ -107,7 +107,7 @@ describe "Fundler::GemHelper tasks" do
         mock_confirm_message(/Tagged v0.0.1/)
         mock_confirm_message("Pushed git commits and tags")
 
-        @helper.should_receive(:rubygem_push).with(bundled_app('test/pkg/test-0.0.1.gem').to_s)
+        @helper.should_receive(:rubygem_push).with(fundled_app('test/pkg/test-0.0.1.gem').to_s)
 
         Dir.chdir(gem_repo1) {
           `git init --bare`

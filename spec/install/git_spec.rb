@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle install with git sources" do
+describe "fundle install with git sources" do
   describe "when floating on master" do
     before :each do
       build_git "foo" do |s|
@@ -27,14 +27,14 @@ describe "bundle install with git sources" do
     end
 
     it "caches the git repo" do
-      Dir["#{default_bundle_path}/cache/fundler/git/foo-1.0-*"].should have(1).item
+      Dir["#{default_fundle_path}/cache/fundler/git/foo-1.0-*"].should have(1).item
     end
 
     it "does not update the git source implicitly" do
       update_git "foo"
 
       in_app_root2 do
-        install_gemfile bundled_app2("Gemfile"), <<-G
+        install_gemfile fundled_app2("Gemfile"), <<-G
           git "#{lib_path('foo-1.0')}" do
             gem 'foo'
           end
@@ -53,7 +53,7 @@ describe "bundle install with git sources" do
 
     it "setups executables" do
       pending_jruby_shebang_fix
-      bundle "exec foobar"
+      fundle "exec foobar"
       out.should == "1.0"
     end
 
@@ -68,21 +68,21 @@ describe "bundle install with git sources" do
     end
 
     it "still works after moving the application directory" do
-      bundle "install --path vendor/bundle"
-      FileUtils.mv bundled_app, tmp('bundled_app.bck')
+      fundle "install --path vendor/fundle"
+      FileUtils.mv fundled_app, tmp('fundled_app.bck')
 
-      Dir.chdir tmp('bundled_app.bck')
+      Dir.chdir tmp('fundled_app.bck')
       should_be_installed "foo 1.0"
     end
 
     it "can still install after moving the application directory" do
-      bundle "install --path vendor/bundle"
-      FileUtils.mv bundled_app, tmp('bundled_app.bck')
+      fundle "install --path vendor/fundle"
+      FileUtils.mv fundled_app, tmp('fundled_app.bck')
 
       update_git "foo", "1.1", :path => lib_path("foo-1.0")
 
-      Dir.chdir tmp('bundled_app.bck')
-      gemfile tmp('bundled_app.bck/Gemfile'), <<-G
+      Dir.chdir tmp('fundled_app.bck')
+      gemfile tmp('fundled_app.bck/Gemfile'), <<-G
         source "file://#{gem_repo1}"
         git "#{lib_path('foo-1.0')}" do
           gem 'foo'
@@ -91,7 +91,7 @@ describe "bundle install with git sources" do
         gem "rack", "1.0"
       G
 
-      bundle "update foo"
+      fundle "update foo"
 
       should_be_installed "foo 1.1", "rack 1.0"
     end
@@ -112,7 +112,7 @@ describe "bundle install with git sources" do
     end
 
     it "does not explode" do
-      bundle "install"
+      fundle "install"
       should_be_installed "rack 1.0"
     end
   end
@@ -164,7 +164,7 @@ describe "bundle install with git sources" do
     #     gem "thingy", :git => "git@notthere.fallingsnow.net:somebody/thingy.git"
     #   G
     #
-    #   bundle :install, :expect_err => true
+    #   fundle :install, :expect_err => true
     #
     #   # p out
     #   # p err
@@ -346,7 +346,7 @@ describe "bundle install with git sources" do
       gem "foo", "1.0", :git => "omgomg"
     G
 
-    bundle :install, :expect_err => true
+    fundle :install, :expect_err => true
 
     out.should include("An error has occurred in git")
     err.should include("fatal")
@@ -378,14 +378,14 @@ describe "bundle install with git sources" do
       s.write "lib/forced.rb", "FORCED = '1.1'"
     end
 
-    bundle "update"
+    fundle "update"
     should_be_installed "forced 1.1"
 
     Dir.chdir(lib_path('forced-1.0')) do
       `git reset --hard HEAD^`
     end
 
-    bundle "update"
+    fundle "update"
     should_be_installed "forced 1.0"
   end
 
@@ -463,19 +463,19 @@ describe "bundle install with git sources" do
 
     FileUtils.rm_rf(lib_path('foo-1.0'))
 
-    bundle "install"
+    fundle "install"
     out.should_not =~ /updating/i
   end
 
-  it "doesn't blow up if bundle install is run twice in a row" do
+  it "doesn't blow up if fundle install is run twice in a row" do
     build_git "foo"
 
     gemfile <<-G
       gem "foo", :git => "#{lib_path('foo-1.0')}"
     G
 
-    bundle "install"
-    bundle "install", :exitstatus => true
+    fundle "install"
+    fundle "install", :exitstatus => true
     exitstatus.should == 0
   end
 
@@ -524,7 +524,7 @@ describe "bundle install with git sources" do
     end
   end
 
-  describe "bundle install after the remote has been updated" do
+  describe "fundle install after the remote has been updated" do
     it "installs" do
       build_git "valim"
 
@@ -536,12 +536,12 @@ describe "bundle install with git sources" do
       update_git "valim"
       new_revision = revision_for(lib_path("valim-1.0"))
 
-      lockfile = File.read(bundled_app("Gemfile.lock"))
-      File.open(bundled_app("Gemfile.lock"), "w") do |file|
+      lockfile = File.read(fundled_app("Gemfile.lock"))
+      File.open(fundled_app("Gemfile.lock"), "w") do |file|
         file.puts lockfile.gsub(/revision: #{old_revision}/, "revision: #{new_revision}")
       end
 
-      bundle "install"
+      fundle "install"
 
       run <<-R
         require "valim"
@@ -552,7 +552,7 @@ describe "bundle install with git sources" do
     end
   end
 
-  describe "bundle install --deployment with git sources" do
+  describe "fundle install --deployment with git sources" do
     it "works" do
       build_git "valim", :path => lib_path('valim')
 
@@ -564,7 +564,7 @@ describe "bundle install with git sources" do
 
       simulate_new_machine
 
-      bundle "install --deployment", :exitstatus => true
+      fundle "install --deployment", :exitstatus => true
       exitstatus.should == 0
     end
   end

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle install with gem sources" do
+describe "fundle install with gem sources" do
   describe "with groups" do
     describe "installing with no options" do
       before :each do
@@ -58,29 +58,29 @@ describe "bundle install with gem sources" do
         end
 
         it "installs gems in the default group" do
-          bundle :install, :without => "emo"
+          fundle :install, :without => "emo"
           should_be_installed "rack 1.0.0", :groups => [:default]
         end
 
         it "does not install gems from the excluded group" do
-          bundle :install, :without => "emo"
+          fundle :install, :without => "emo"
           should_not_be_installed "activesupport 2.3.5", :groups => [:default]
         end
 
         it "does not install gems from the previously excluded group" do
-          bundle :install, :without => "emo"
+          fundle :install, :without => "emo"
           should_not_be_installed "activesupport 2.3.5"
-          bundle :install
+          fundle :install
           should_not_be_installed "activesupport 2.3.5"
         end
 
         it "does not say it installed gems from the excluded group" do
-          bundle :install, :without => "emo"
+          fundle :install, :without => "emo"
           out.should_not include("activesupport")
         end
 
         it "allows Fundler.setup for specific groups" do
-          bundle :install, :without => "emo"
+          fundle :install, :without => "emo"
           run("require 'rack'; puts RACK", :default)
           out.should == '1.0.0'
         end
@@ -94,15 +94,15 @@ describe "bundle install with gem sources" do
             end
           G
 
-          bundle :install, :without => "emo"
+          fundle :install, :without => "emo"
           should_be_installed "activesupport 2.3.2", :groups => [:default]
         end
 
         it "still works on a different machine and excludes gems" do
-          bundle :install, :without => "emo"
+          fundle :install, :without => "emo"
 
           simulate_new_machine
-          bundle :install, :without => "emo"
+          fundle :install, :without => "emo"
 
           should_be_installed "rack 1.0.0", :groups => [:default]
           should_not_be_installed "activesupport 2.3.5", :groups => [:default]
@@ -111,7 +111,7 @@ describe "bundle install with gem sources" do
         it "still works when BUNDLE_WITHOUT is set" do
           ENV["BUNDLE_WITHOUT"] = "emo"
 
-          bundle :install
+          fundle :install
           out.should_not include("activesupport")
 
           should_be_installed "rack 1.0.0", :groups => [:default]
@@ -133,22 +133,22 @@ describe "bundle install with gem sources" do
         end
 
         it "installs gems in the default group" do
-          bundle :install, :without => "emo lolercoaster"
+          fundle :install, :without => "emo lolercoaster"
           should_be_installed "rack 1.0.0"
         end
 
         it "installs the gem if any of its groups are installed" do
-          bundle "install --without emo"
+          fundle "install --without emo"
           should_be_installed "rack 1.0.0", "activesupport 2.3.5"
         end
 
         it "works when locked as well" do
-          bundle "install --without emo"
-          bundle "lock"
+          fundle "install --without emo"
+          fundle "lock"
 
           simulate_new_machine
 
-          bundle "install --without lolercoaster"
+          fundle "install --without lolercoaster"
           should_be_installed "rack 1.0.0", "activesupport 2.3.5"
         end
 
@@ -169,22 +169,22 @@ describe "bundle install with gem sources" do
           end
 
           it "installs the gem w/ option --without emo" do
-            bundle "install --without emo"
+            fundle "install --without emo"
             should_be_installed "activesupport 2.3.5"
           end
 
           it "installs the gem w/ option --without lolercoaster" do
-            bundle "install --without lolercoaster"
+            fundle "install --without lolercoaster"
             should_be_installed "activesupport 2.3.5"
           end
 
           it "does not install the gem w/ option --without emo lolercoaster" do
-            bundle "install --without emo lolercoaster"
+            fundle "install --without emo lolercoaster"
             should_not_be_installed "activesupport 2.3.5"
           end
 
           it "does not install the gem w/ option --without 'emo lolercoaster'" do
-            bundle "install --without 'emo lolercoaster'"
+            fundle "install --without 'emo lolercoaster'"
             should_not_be_installed "activesupport 2.3.5"
           end
         end
@@ -204,22 +204,22 @@ describe "bundle install with gem sources" do
         end
 
         it "installs gems in the default group" do
-          bundle :install, :without => "emo lolercoaster"
+          fundle :install, :without => "emo lolercoaster"
           should_be_installed "rack 1.0.0"
         end
 
         it "installs the gem if any of its groups are installed" do
-          bundle "install --without emo"
+          fundle "install --without emo"
           should_be_installed "rack 1.0.0", "activesupport 2.3.5"
         end
 
         it "works when locked as well" do
-          bundle "install --without emo"
-          bundle "lock"
+          fundle "install --without emo"
+          fundle "lock"
 
           simulate_new_machine
 
-          bundle "install --without lolercoaster"
+          fundle "install --without lolercoaster"
           should_be_installed "rack 1.0.0", "activesupport 2.3.5"
         end
       end

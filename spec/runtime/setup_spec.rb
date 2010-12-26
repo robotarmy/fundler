@@ -35,7 +35,7 @@ describe "Fundler.setup" do
       Fundler.setup
     R
 
-    bundled_app("Gemfile.lock").should_not exist
+    fundled_app("Gemfile.lock").should_not exist
   end
 
   it "doesn't change the Gemfile.lock if the setup fails" do
@@ -44,7 +44,7 @@ describe "Fundler.setup" do
       gem "rack"
     G
 
-    lockfile = File.read(bundled_app("Gemfile.lock"))
+    lockfile = File.read(fundled_app("Gemfile.lock"))
 
     gemfile <<-G
       source "file://#{gem_repo1}"
@@ -59,7 +59,7 @@ describe "Fundler.setup" do
       Fundler.setup
     R
 
-    File.read(bundled_app("Gemfile.lock")).should == lockfile
+    File.read(fundled_app("Gemfile.lock")).should == lockfile
   end
 
   it "makes a Gemfile.lock if setup succeeds" do
@@ -68,12 +68,12 @@ describe "Fundler.setup" do
       gem "rack"
     G
 
-    lockfile = File.read(bundled_app("Gemfile.lock"))
+    lockfile = File.read(fundled_app("Gemfile.lock"))
 
-    FileUtils.rm(bundled_app("Gemfile.lock"))
+    FileUtils.rm(fundled_app("Gemfile.lock"))
 
     run "1"
-    bundled_app("Gemfile.lock").should exist
+    fundled_app("Gemfile.lock").should exist
   end
 
   it "uses BUNDLE_GEMFILE to locate the gemfile if present" do
@@ -82,19 +82,19 @@ describe "Fundler.setup" do
       gem "rack"
     G
 
-    gemfile bundled_app('4realz'), <<-G
+    gemfile fundled_app('4realz'), <<-G
       source "file://#{gem_repo1}"
       gem "activesupport", "2.3.5"
     G
 
-    ENV['BUNDLE_GEMFILE'] = bundled_app('4realz').to_s
-    bundle :install
+    ENV['BUNDLE_GEMFILE'] = fundled_app('4realz').to_s
+    fundle :install
 
     should_be_installed "activesupport 2.3.5"
   end
 
   it "prioritizes gems in BUNDLE_PATH over gems in GEM_HOME" do
-    ENV['BUNDLE_PATH'] = bundled_app('.bundle').to_s
+    ENV['BUNDLE_PATH'] = fundled_app('.fundle').to_s
     install_gemfile <<-G
       source "file://#{gem_repo1}"
       gem "rack", "1.0.0"
@@ -197,11 +197,11 @@ describe "Fundler.setup" do
 
     it "provides a useful exception when the git repo is not checked out yet" do
       run "1", :expect_err => true
-      err.should include("#{lib_path('rack-1.0.0')} (at master) is not checked out. Please run `bundle install`")
+      err.should include("#{lib_path('rack-1.0.0')} (at master) is not checked out. Please run `fundle install`")
     end
 
     it "does not hit the git binary if the lockfile is available and up to date" do
-      bundle "install"
+      fundle "install"
 
       break_git!
 
@@ -221,9 +221,9 @@ describe "Fundler.setup" do
     end
 
     it "provides a good exception if the lockfile is unavailable" do
-      bundle "install"
+      fundle "install"
 
-      FileUtils.rm(bundled_app("Gemfile.lock"))
+      FileUtils.rm(fundled_app("Gemfile.lock"))
 
       break_git!
 
@@ -245,14 +245,14 @@ describe "Fundler.setup" do
     end
 
     it "works even when the cache directory has been deleted" do
-      bundle "install --path vendor/bundle"
+      fundle "install --path vendor/fundle"
       FileUtils.rm_rf vendored_gems('cache')
       should_be_installed "rack 1.0.0"
     end
 
-    it "does not randomly change the path when specifying --path and the bundle directory becomes read only" do
+    it "does not randomly change the path when specifying --path and the fundle directory becomes read only" do
       begin
-        bundle "install --path vendor/bundle"
+        fundle "install --path vendor/fundle"
 
         Dir["**/*"].each do |f|
           File.directory?(f) ?
@@ -324,7 +324,7 @@ describe "Fundler.setup" do
   # activated gems, so this test cannot work on 1.9 :(
   if RUBY_VERSION < "1.9"
     describe "preactivated gems" do
-      it "raises an exception if a pre activated gem conflicts with the bundle" do
+      it "raises an exception if a pre activated gem conflicts with the fundle" do
         system_gems "thin-1.0", "rack-1.0.0"
         build_gem "thin", "1.1", :to_system => true do |s|
           s.add_dependency "rack"
@@ -346,7 +346,7 @@ describe "Fundler.setup" do
           end
         R
 
-        out.should == "You have already activated thin 1.1, but your Gemfile requires thin 1.0. Consider using bundle exec."
+        out.should == "You have already activated thin 1.1, but your Gemfile requires thin 1.0. Consider using fundle exec."
       end
     end
   end
@@ -379,7 +379,7 @@ describe "Fundler.setup" do
     G
 
     ENV["GEM_HOME"] = ""
-    bundle %{exec ruby -e "require 'set'"}
+    fundle %{exec ruby -e "require 'set'"}
 
     err.should be_empty
   end
@@ -437,7 +437,7 @@ describe "Fundler.setup" do
     end
   end
 
-  describe "with bundled and system gems" do
+  describe "with fundled and system gems" do
     before :each do
       system_gems "rack-1.0.0"
 
@@ -472,7 +472,7 @@ describe "Fundler.setup" do
       out.should == "2.3.5"
     end
 
-    it "raises an exception if gem is used to invoke a system gem not in the bundle" do
+    it "raises an exception if gem is used to invoke a system gem not in the fundle" do
       run <<-R
         begin
           gem 'rack'
@@ -481,16 +481,16 @@ describe "Fundler.setup" do
         end
       R
 
-      out.should == "rack is not part of the bundle. Add it to Gemfile."
+      out.should == "rack is not part of the fundle. Add it to Gemfile."
     end
 
     it "sets GEM_HOME appropriately" do
       run "puts ENV['GEM_HOME']"
-      out.should == default_bundle_path.to_s
+      out.should == default_fundle_path.to_s
     end
   end
 
-  describe "with system gems in the bundle" do
+  describe "with system gems in the fundle" do
     before :each do
       system_gems "rack-1.0.0"
 
@@ -505,7 +505,7 @@ describe "Fundler.setup" do
       run "puts Gem.path"
       paths = out.split("\n")
       paths.should include(system_gem_path.to_s)
-      paths.should include(default_bundle_path.to_s)
+      paths.should include(default_fundle_path.to_s)
     end
   end
 
@@ -533,7 +533,7 @@ describe "Fundler.setup" do
     end
 
     it "evals each gemspec in the context of its parent directory" do
-      bundle :install
+      fundle :install
       run "require 'bar'; puts BAR"
       out.should == "1.0"
     end
@@ -542,7 +542,7 @@ describe "Fundler.setup" do
       update_git "bar", :gemspec => false do |s|
         s.write "bar.gemspec", "require 'foobarbaz'"
       end
-      bundle :install
+      fundle :install
       out.should include("was a LoadError while evaluating bar.gemspec")
       out.should include("foobarbaz")
       out.should include("bar.gemspec:1")
@@ -550,7 +550,7 @@ describe "Fundler.setup" do
     end
 
     it "evals each gemspec with a binding from the top level" do
-      bundle "install"
+      fundle "install"
 
       ruby <<-RUBY
         require 'fundler'
@@ -565,13 +565,13 @@ describe "Fundler.setup" do
     end
   end
 
-  describe "when Fundler is bundled" do
+  describe "when Fundler is fundled" do
     it "doesn't blow up" do
       install_gemfile <<-G
         gem "fundler", :path => "#{File.expand_path("..", lib)}"
       G
 
-      bundle %|exec ruby -e "require 'fundler'; Fundler.setup"|
+      fundle %|exec ruby -e "require 'fundler'; Fundler.setup"|
       err.should be_empty
     end
   end

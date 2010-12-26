@@ -513,7 +513,7 @@ module Fundler
           git_scope = "#{base_name}-#{shortref_for_path(revision)}"
 
           if Fundler.requires_sudo?
-            Fundler.user_bundle_path.join(Fundler.ruby_scope).join(git_scope)
+            Fundler.user_fundle_path.join(Fundler.ruby_scope).join(git_scope)
           else
             Fundler.install_path.join(git_scope)
           end
@@ -549,7 +549,7 @@ module Fundler
       def load_spec_files
         super
       rescue PathError, GitError
-        raise GitError, "#{to_s} is not checked out. Please run `bundle install`"
+        raise GitError, "#{to_s} is not checked out. Please run `fundle install`"
       end
 
     private
@@ -563,7 +563,7 @@ module Fundler
           end
           out
         else
-          raise GitError, "Fundler is trying to run a `git #{command}` at runtime. You probably need to run `bundle install`. However, " \
+          raise GitError, "Fundler is trying to run a `git #{command}` at runtime. You probably need to run `fundle install`. However, " \
                           "this error message could probably be more useful. Please submit a ticket at http://github.com/carlhuda/fundler/issues " \
                           "with steps to reproduce as well as the following\n\nCALLER: #{caller.join("\n")}"
         end
@@ -598,7 +598,7 @@ module Fundler
           git_scope = "#{base_name}-#{uri_hash}"
 
           if Fundler.requires_sudo?
-            Fundler.user_bundle_path.join("cache/git", git_scope)
+            Fundler.user_fundle_path.join("cache/git", git_scope)
           else
             Fundler.cache.join("git", git_scope)
           end
@@ -653,7 +653,7 @@ module Fundler
           if allow_git_ops?
             in_cache { git("rev-parse #{ref}").strip }
           else
-            raise GitError, "The git source #{uri} is not yet checked out. Please run `bundle install` before trying to start your application"
+            raise GitError, "The git source #{uri} is not yet checked out. Please run `fundle install` before trying to start your application"
           end
         end
       end

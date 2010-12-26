@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle install for the first time with v1.0" do
+describe "fundle install for the first time with v1.0" do
   before :each do
     in_app_root
 
@@ -12,15 +12,15 @@ describe "bundle install for the first time with v1.0" do
 
   it "removes lockfiles in 0.9 YAML format" do
     File.open("Gemfile.lock", "w"){|f| YAML.dump({}, f) }
-    bundle :install
+    fundle :install
     File.read("Gemfile.lock").should_not =~ /^---/
   end
 
   it "removes env.rb if it exists" do
-    bundled_app.join(".bundle").mkdir
-    bundled_app.join(".bundle/environment.rb").open("w"){|f| f.write("raise 'nooo'") }
-    bundle :install
-    bundled_app.join(".bundle/environment.rb").should_not exist
+    fundled_app.join(".fundle").mkdir
+    fundled_app.join(".fundle/environment.rb").open("w"){|f| f.write("raise 'nooo'") }
+    fundle :install
+    fundled_app.join(".fundle/environment.rb").should_not exist
   end
 
 end

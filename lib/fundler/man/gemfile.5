@@ -128,27 +128,27 @@ Fundler\.require(:test)           # requires just the _test_ group
 .IP "" 0
 .
 .P
-The Fundler CLI allows you to specify a list of groups whose gems \fBbundle install\fR should not install with the \fB\-\-without\fR option\. To specify multiple groups to ignore, specify a list of groups separated by spaces\.
+The Fundler CLI allows you to specify a list of groups whose gems \fBfundle install\fR should not install with the \fB\-\-without\fR option\. To specify multiple groups to ignore, specify a list of groups separated by spaces\.
 .
 .IP "" 4
 .
 .nf
 
-bundle install \-\-without test
-bundle install \-\-without development test
+fundle install \-\-without test
+fundle install \-\-without development test
 .
 .fi
 .
 .IP "" 0
 .
 .P
-After running \fBbundle install \-\-without test\fR, fundler will remember that you excluded the test group in the last installation\. The next time you run \fBbundle install\fR, without any \fB\-\-without option\fR, fundler will recall it\.
+After running \fBfundle install \-\-without test\fR, fundler will remember that you excluded the test group in the last installation\. The next time you run \fBfundle install\fR, without any \fB\-\-without option\fR, fundler will recall it\.
 .
 .P
 Also, calling \fBFundler\.setup\fR with no parameters, or calling \fBrequire "fundler/setup"\fR will setup all groups except for the ones you excluded via \fB\-\-without\fR (since they are obviously not available)\.
 .
 .P
-Note that on \fBbundle install\fR, fundler downloads and evaluates all gems, in order to create a single canonical list of all of the required gems and their dependencies\. This means that you cannot list different versions of the same gems in different groups\. For more details, see Understanding Fundler \fIhttp://gemfundler\.com/rationale\.html\fR\.
+Note that on \fBfundle install\fR, fundler downloads and evaluates all gems, in order to create a single canonical list of all of the required gems and their dependencies\. This means that you cannot list different versions of the same gems in different groups\. For more details, see Understanding Fundler \fIhttp://gemfundler\.com/rationale\.html\fR\.
 .
 .SS "PLATFORMS (:platforms)"
 If a gem should only be used in a particular platform or set of platforms, you can specify them\. Platforms are essentially identical to groups, except that you do not need to use the \fB\-\-without\fR install\-time flag to exclude groups of gems for other platforms\.
@@ -216,10 +216,10 @@ gem "nokogiri",   :platforms => [:mri_18, :jruby]
 .IP "" 0
 .
 .P
-All operations involving groups (\fBbundle install\fR, \fBFundler\.setup\fR, \fBFundler\.require\fR) behave exactly the same as if any groups not matching the current platform were explicitly excluded\.
+All operations involving groups (\fBfundle install\fR, \fBFundler\.setup\fR, \fBFundler\.require\fR) behave exactly the same as if any groups not matching the current platform were explicitly excluded\.
 .
 .SS "GIT (:git)"
-If necessary, you can specify that a gem is located at a particular git repository\. The repository can be public (\fBhttp://github\.com/rails/rails\.git\fR) or private (\fBgit@github\.com:rails/rails\.git\fR)\. If the repository is private, the user that you use to run \fBbundle install\fR \fBMUST\fR have the appropriate keys available in their \fB$HOME/\.ssh\fR\.
+If necessary, you can specify that a gem is located at a particular git repository\. The repository can be public (\fBhttp://github\.com/rails/rails\.git\fR) or private (\fBgit@github\.com:rails/rails\.git\fR)\. If the repository is private, the user that you use to run \fBfundle install\fR \fBMUST\fR have the appropriate keys available in their \fB$HOME/\.ssh\fR\.
 .
 .P
 Git repositories are specified using the \fB:git\fR parameter\. The \fBgroup\fR, \fBplatforms\fR, and \fBrequire\fR options are available and behave exactly the same as they would for a normal gem\.
@@ -248,7 +248,7 @@ If a git repository does have a \fB\.gemspec\fR for the gem you attached it to, 
 .nf
 
 gem "rails", "2\.3\.8", :git => "git://github\.com/rails/rails\.git"
-# bundle install will fail, because the \.gemspec in the rails
+# fundle install will fail, because the \.gemspec in the rails
 # repository\'s master branch specifies version 3\.0\.0
 .
 .fi

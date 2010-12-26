@@ -19,11 +19,11 @@ module Spec
     attr_reader :out, :err, :exitstatus
 
     def in_app_root(&blk)
-      Dir.chdir(bundled_app, &blk)
+      Dir.chdir(fundled_app, &blk)
     end
 
     def in_app_root2(&blk)
-      Dir.chdir(bundled_app2, &blk)
+      Dir.chdir(fundled_app2, &blk)
     end
 
     def run(cmd, *args)
@@ -39,7 +39,7 @@ module Spec
       File.expand_path('../../../lib', __FILE__)
     end
 
-    def bundle(cmd, options = {})
+    def fundle(cmd, options = {})
       expect_err  = options.delete(:expect_err)
       exitstatus = options.delete(:exitstatus)
       options["no-color"] = true unless options.key?("no-color") || cmd.to_s[0..3] == "exec"
@@ -48,7 +48,7 @@ module Spec
       args = options.map do |k,v|
         v == true ? " --#{k}" : " --#{k} #{v}" if v
       end.join
-      gemfile = File.expand_path('../../../bin/bundle', __FILE__)
+      gemfile = File.expand_path('../../../bin/fundle', __FILE__)
       cmd = "#{env}#{Gem.ruby} -I#{lib} #{gemfile} #{cmd}#{args}"
 
       if exitstatus
@@ -68,7 +68,7 @@ module Spec
     def gembin(cmd)
       lib = File.expand_path("../../../lib", __FILE__)
       old, ENV['RUBYOPT'] = ENV['RUBYOPT'], "#{ENV['RUBYOPT']} -I#{lib}"
-      cmd = bundled_app("bin/#{cmd}") unless cmd.to_s.include?("/")
+      cmd = fundled_app("bin/#{cmd}") unless cmd.to_s.include?("/")
       sys_exec(cmd.to_s)
     ensure
       ENV['RUBYOPT'] = old
@@ -96,7 +96,7 @@ module Spec
     end
 
     def config(config = nil)
-      path = bundled_app('.bundle/config')
+      path = fundled_app('.fundle/config')
       return YAML.load_file(path) unless config
       FileUtils.mkdir_p(File.dirname(path))
       File.open(path, 'w') do |f|
@@ -106,7 +106,7 @@ module Spec
     end
 
     def gemfile(*args)
-      path = bundled_app("Gemfile")
+      path = fundled_app("Gemfile")
       path = args.shift if Pathname === args.first
       str  = args.shift || ""
       path.dirname.mkpath
@@ -116,7 +116,7 @@ module Spec
     end
 
     def lockfile(*args)
-      path = bundled_app("Gemfile.lock")
+      path = fundled_app("Gemfile.lock")
       path = args.shift if Pathname === args.first
       str  = args.shift || ""
 
@@ -132,7 +132,7 @@ module Spec
     def install_gemfile(*args)
       gemfile(*args)
       opts = args.last.is_a?(Hash) ? args.last : {}
-      bundle :install, opts
+      fundle :install, opts
     end
 
     def install_gems(*gems)
@@ -202,20 +202,20 @@ module Spec
     def cache_gems(*gems)
       gems = gems.flatten
 
-      FileUtils.rm_rf("#{bundled_app}/vendor/cache")
-      FileUtils.mkdir_p("#{bundled_app}/vendor/cache")
+      FileUtils.rm_rf("#{fundled_app}/vendor/cache")
+      FileUtils.mkdir_p("#{fundled_app}/vendor/cache")
 
       gems.each do |g|
         path = "#{gem_repo1}/gems/#{g}.gem"
         raise "OMG `#{path}` does not exist!" unless File.exist?(path)
-        FileUtils.cp(path, "#{bundled_app}/vendor/cache")
+        FileUtils.cp(path, "#{fundled_app}/vendor/cache")
       end
     end
 
     def simulate_new_machine
       system_gems []
-      FileUtils.rm_rf default_bundle_path
-      FileUtils.rm_rf bundled_app('.bundle')
+      FileUtils.rm_rf default_fundle_path
+      FileUtils.rm_rf fundled_app('.fundle')
     end
 
     def simulate_platform(platform)

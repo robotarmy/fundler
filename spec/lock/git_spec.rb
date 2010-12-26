@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle lock with git gems" do
+describe "fundle lock with git gems" do
   before :each do
     build_git "foo"
 
@@ -15,7 +15,7 @@ describe "bundle lock with git gems" do
 
   it "locks a git source to the current ref" do
     update_git "foo"
-    bundle :install
+    fundle :install
 
     run <<-RUBY
       require 'foo'
@@ -29,7 +29,7 @@ describe "bundle lock with git gems" do
     run <<-RUBY
       puts Gem.source_index.find_name('foo').first.full_gem_path
     RUBY
-    out.should == bundle("show foo")
+    out.should == fundle("show foo")
   end
 
 end

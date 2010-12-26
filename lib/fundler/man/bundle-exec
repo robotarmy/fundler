@@ -4,40 +4,40 @@
 .TH "BUNDLE\-EXEC" "1" "December 2010" "" ""
 .
 .SH "NAME"
-\fBbundle\-exec\fR \- Execute a command in the context of the bundle
+\fBfundle\-exec\fR \- Execute a command in the context of the fundle
 .
 .SH "SYNOPSIS"
-\fBbundle exec\fR \fIcommand\fR
+\fBfundle exec\fR \fIcommand\fR
 .
 .SH "DESCRIPTION"
 This command executes the command, making all gems specified in the \fBGemfile(5)\fR available to \fBrequire\fR in Ruby programs\.
 .
 .P
-Essentially, if you would normally have run something like \fBrspec spec/my_spec\.rb\fR, and you want to use the gems specified in the \fBGemfile(5)\fR and installed via bundle install(1) \fIbundle\-install\.1\.html\fR, you should run \fBbundle exec rspec spec/my_spec\.rb\fR\.
+Essentially, if you would normally have run something like \fBrspec spec/my_spec\.rb\fR, and you want to use the gems specified in the \fBGemfile(5)\fR and installed via fundle install(1) \fIfundle\-install\.1\.html\fR, you should run \fBfundle exec rspec spec/my_spec\.rb\fR\.
 .
 .P
-Note that \fBbundle exec\fR does not require that an executable is available on your shell\'s \fB$PATH\fR\.
+Note that \fBfundle exec\fR does not require that an executable is available on your shell\'s \fB$PATH\fR\.
 .
 .SH "BUNDLE INSTALL \-\-BINSTUBS"
-If you use the \fB\-\-binstubs\fR flag in bundle install(1) \fIbundle\-install\.1\.html\fR, Fundler will automatically create a directory (which defaults to \fBapp_root/bin\fR) containing all of the executables available from gems in the bundle\.
+If you use the \fB\-\-binstubs\fR flag in fundle install(1) \fIfundle\-install\.1\.html\fR, Fundler will automatically create a directory (which defaults to \fBapp_root/bin\fR) containing all of the executables available from gems in the fundle\.
 .
 .P
-After using \fB\-\-binstubs\fR, \fBbin/rspec spec/my_spec\.rb\fR is identical to \fBbundle exec rspec spec/my_spec\.rb\fR\.
+After using \fB\-\-binstubs\fR, \fBbin/rspec spec/my_spec\.rb\fR is identical to \fBfundle exec rspec spec/my_spec\.rb\fR\.
 .
 .SH "ENVIRONMENT MODIFICATIONS"
-\fBbundle exec\fR makes a number of changes to the shell environment, then executes the command you specify in full\.
+\fBfundle exec\fR makes a number of changes to the shell environment, then executes the command you specify in full\.
 .
 .IP "\(bu" 4
-make sure that it\'s still possible to shell out to \fBbundle\fR from inside a command invoked by \fBbundle exec\fR (using \fB$BUNDLE_BIN_PATH\fR)
+make sure that it\'s still possible to shell out to \fBfundle\fR from inside a command invoked by \fBfundle exec\fR (using \fB$BUNDLE_BIN_PATH\fR)
 .
 .IP "\(bu" 4
-put the directory containing executables (like \fBrails\fR, \fBrspec\fR, \fBrackup\fR) for your bundle on \fB$PATH\fR
+put the directory containing executables (like \fBrails\fR, \fBrspec\fR, \fBrackup\fR) for your fundle on \fB$PATH\fR
 .
 .IP "\(bu" 4
 make sure that if fundler is invoked in the subshell, it uses the same \fBGemfile\fR (by setting \fBBUNDLE_GEMFILE\fR)
 .
 .IP "\(bu" 4
-add \fB\-rfundler/setup\fR to \fB$RUBYOPT\fR, which makes sure that Ruby programs invoked in the subshell can see the gems in the bundle
+add \fB\-rfundler/setup\fR to \fB$RUBYOPT\fR, which makes sure that Ruby programs invoked in the subshell can see the gems in the fundle
 .
 .IP "" 0
 .
@@ -45,19 +45,19 @@ add \fB\-rfundler/setup\fR to \fB$RUBYOPT\fR, which makes sure that Ruby program
 It also modifies Rubygems:
 .
 .IP "\(bu" 4
-disallow loading additional gems not in the bundle
+disallow loading additional gems not in the fundle
 .
 .IP "\(bu" 4
-modify the \fBgem\fR method to be a no\-op if a gem matching the requirements is in the bundle, and to raise a \fBGem::LoadError\fR if it\'s not
+modify the \fBgem\fR method to be a no\-op if a gem matching the requirements is in the fundle, and to raise a \fBGem::LoadError\fR if it\'s not
 .
 .IP "\(bu" 4
 Define \fBGem\.refresh\fR to be a no\-op, since the source index is always frozen when using fundler, and to prevent gems from the system leaking into the environment
 .
 .IP "\(bu" 4
-Override \fBGem\.bin_path\fR to use the gems in the bundle, making system executables work
+Override \fBGem\.bin_path\fR to use the gems in the fundle, making system executables work
 .
 .IP "\(bu" 4
-Add all gems in the bundle into Gem\.loaded_specs
+Add all gems in the fundle into Gem\.loaded_specs
 .
 .IP "" 0
 .
@@ -96,7 +96,7 @@ If this happens, fundler will say:
 .nf
 
 You have already activated json_pure 1\.4\.6 but your Gemfile
-requires json_pure 1\.4\.3\. Consider using bundle exec\.
+requires json_pure 1\.4\.3\. Consider using fundle exec\.
 .
 .fi
 .

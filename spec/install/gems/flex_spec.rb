@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle flex_install" do
+describe "fundle flex_install" do
   it "installs the gems as expected" do
     install_gemfile <<-G
       source "file://#{gem_repo1}"
@@ -25,7 +25,7 @@ describe "bundle flex_install" do
       gem 'rack', '1.0'
     G
 
-    bundle :install
+    fundle :install
     should_be_installed "rack 1.0.0"
     should_be_locked
   end
@@ -184,14 +184,14 @@ describe "bundle flex_install" do
     end
 
     it "does not install gems whose dependencies are not met" do
-      bundle :install
+      fundle :install
       ruby <<-RUBY
         require 'fundler/setup'
       RUBY
       out.should =~ /could not find gem 'rack-obama/i
     end
 
-    it "suggests bundle update when the Gemfile requires different versions than the lock" do
+    it "suggests fundle update when the Gemfile requires different versions than the lock" do
       nice_error = <<-E.strip.gsub(/^ {8}/, '')
         Fetching source index for file:#{gem_repo2}/
         Fundler could not find compatible versions for gem "rack":
@@ -202,11 +202,11 @@ describe "bundle flex_install" do
             rack-obama (= 2.0) depends on
               rack (= 1.2)
 
-        Running `bundle update` will rebuild your snapshot from scratch, using only
+        Running `fundle update` will rebuild your snapshot from scratch, using only
         the gems in your Gemfile, which may resolve the conflict.
       E
 
-      bundle :install
+      fundle :install
       out.should == nice_error
     end
   end
@@ -228,16 +228,16 @@ describe "bundle flex_install" do
 
     it "does something" do
       lambda {
-        bundle "install"
-      }.should_not change { File.read(bundled_app('Gemfile.lock')) }
+        fundle "install"
+      }.should_not change { File.read(fundled_app('Gemfile.lock')) }
 
       out.should include('rack = 0.9.1')
       out.should include('locked at 1.0.0')
-      out.should include('bundle update rack')
+      out.should include('fundle update rack')
     end
 
     it "should work when you update" do
-      bundle "update rack"
+      fundle "update rack"
     end
   end
 

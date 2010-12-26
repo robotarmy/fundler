@@ -1,13 +1,13 @@
 require "spec_helper"
 
-describe "bundle install with gem sources" do
+describe "fundle install with gem sources" do
   describe "the simple case" do
     it "prints output and returns if no dependencies are specified" do
       gemfile <<-G
         source "file://#{gem_repo1}"
       G
 
-      bundle :install
+      fundle :install
       out.should =~ /no dependencies/
     end
 
@@ -17,7 +17,7 @@ describe "bundle install with gem sources" do
       G
 
       err.should =~ /FAIL \(StandardError\)/
-      bundled_app("Gemfile.lock").should_not exist
+      fundled_app("Gemfile.lock").should_not exist
     end
 
     it "creates a Gemfile.lock" do
@@ -26,18 +26,18 @@ describe "bundle install with gem sources" do
         gem "rack"
       G
 
-      bundled_app('Gemfile.lock').should exist
+      fundled_app('Gemfile.lock').should exist
     end
 
     it "creates lock files based on the Gemfile name" do
-      gemfile bundled_app('OmgFile'), <<-G
+      gemfile fundled_app('OmgFile'), <<-G
         source "file://#{gem_repo1}"
         gem "rack", "1.0"
       G
 
-      bundle 'install --gemfile OmgFile'
+      fundle 'install --gemfile OmgFile'
 
-      bundled_app("OmgFile.lock").should exist
+      fundled_app("OmgFile.lock").should exist
     end
 
     it "doesn't delete the lockfile if one already exists" do
@@ -46,13 +46,13 @@ describe "bundle install with gem sources" do
         gem 'rack'
       G
 
-      lockfile = File.read(bundled_app("Gemfile.lock"))
+      lockfile = File.read(fundled_app("Gemfile.lock"))
 
       install_gemfile <<-G, :expect_err => true
         raise StandardError, "FAIL"
       G
 
-      File.read(bundled_app("Gemfile.lock")).should == lockfile
+      File.read(fundled_app("Gemfile.lock")).should == lockfile
     end
 
     it "does not touch the lockfile if nothing changed" do
@@ -61,7 +61,7 @@ describe "bundle install with gem sources" do
         gem "rack"
       G
 
-      lambda { run '1' }.should_not change { File.mtime(bundled_app('Gemfile.lock')) }
+      lambda { run '1' }.should_not change { File.mtime(fundled_app('Gemfile.lock')) }
     end
 
     it "fetches gems" do
@@ -70,7 +70,7 @@ describe "bundle install with gem sources" do
         gem 'rack'
       G
 
-      default_bundle_path("gems/rack-1.0.0").should exist
+      default_fundle_path("gems/rack-1.0.0").should exist
       should_be_installed("rack 1.0.0")
     end
 
@@ -80,7 +80,7 @@ describe "bundle install with gem sources" do
         gem 'rack', "> 0.9", "< 1.0"
       G
 
-      default_bundle_path("gems/rack-0.9.1").should exist
+      default_fundle_path("gems/rack-0.9.1").should exist
       should_be_installed("rack 0.9.1")
     end
 
@@ -90,7 +90,7 @@ describe "bundle install with gem sources" do
         gem 'rack', "< 1.0", "> 0.9"
       G
 
-      default_bundle_path("gems/rack-0.9.1").should exist
+      default_fundle_path("gems/rack-0.9.1").should exist
       should_be_installed("rack 0.9.1")
     end
 
@@ -242,7 +242,7 @@ describe "bundle install with gem sources" do
       end
     end
 
-    describe "doing bundle install foo" do
+    describe "doing fundle install foo" do
       before do
         gemfile <<-G
           source "file://#{gem_repo1}"
@@ -251,21 +251,21 @@ describe "bundle install with gem sources" do
       end
 
       it "works" do
-        bundle "install --path vendor"
+        fundle "install --path vendor"
         should_be_installed "rack 1.0"
       end
 
-      it "allows running bundle install --system without deleting foo" do
-        bundle "install --path vendor"
-        bundle "install --system"
-        FileUtils.rm_rf(bundled_app("vendor"))
+      it "allows running fundle install --system without deleting foo" do
+        fundle "install --path vendor"
+        fundle "install --system"
+        FileUtils.rm_rf(fundled_app("vendor"))
         should_be_installed "rack 1.0"
       end
 
-      it "allows running bundle install --system after deleting foo" do
-        bundle "install --path vendor"
-        FileUtils.rm_rf(bundled_app("vendor"))
-        bundle "install --system"
+      it "allows running fundle install --system after deleting foo" do
+        fundle "install --path vendor"
+        FileUtils.rm_rf(fundled_app("vendor"))
+        fundle "install --system"
         should_be_installed "rack 1.0"
       end
     end
@@ -290,7 +290,7 @@ describe "bundle install with gem sources" do
         gem "rack"
       G
 
-      bundle :install, :expect_err => true
+      fundle :install, :expect_err => true
       out.should =~ /Your Gemfile doesn't have any sources/i
     end
   end
@@ -345,57 +345,57 @@ describe "bundle install with gem sources" do
       G
     end
 
-    def set_bundle_path(type, location)
+    def set_fundle_path(type, location)
       if type == :env
         ENV["BUNDLE_PATH"] = location
       elsif type == :global
-        bundle "config path #{location}", "no-color" => nil
+        fundle "config path #{location}", "no-color" => nil
       end
     end
 
     [:env, :global].each do |type|
       it "installs gems to a path if one is specified" do
-        set_bundle_path(type, bundled_app("vendor2").to_s)
-        bundle "install --path vendor/bundle"
+        set_fundle_path(type, fundled_app("vendor2").to_s)
+        fundle "install --path vendor/fundle"
 
         vendored_gems("gems/rack-1.0.0").should be_directory
-        bundled_app("vendor2").should_not be_directory
+        fundled_app("vendor2").should_not be_directory
         should_be_installed "rack 1.0.0"
       end
 
       it "installs gems to BUNDLE_PATH with #{type}" do
-        set_bundle_path(type, bundled_app("vendor").to_s)
+        set_fundle_path(type, fundled_app("vendor").to_s)
 
-        bundle :install
+        fundle :install
 
-        bundled_app('vendor/gems/rack-1.0.0').should be_directory
+        fundled_app('vendor/gems/rack-1.0.0').should be_directory
         should_be_installed "rack 1.0.0"
       end
 
       it "installs gems to BUNDLE_PATH relative to root when relative" do
-        set_bundle_path(type, "vendor")
+        set_fundle_path(type, "vendor")
 
-        FileUtils.mkdir_p bundled_app('lol')
-        Dir.chdir(bundled_app('lol')) do
-          bundle :install
+        FileUtils.mkdir_p fundled_app('lol')
+        Dir.chdir(fundled_app('lol')) do
+          fundle :install
         end
 
-        bundled_app('vendor/gems/rack-1.0.0').should be_directory
+        fundled_app('vendor/gems/rack-1.0.0').should be_directory
         should_be_installed "rack 1.0.0"
       end
     end
 
-    it "installs gems to BUNDLE_PATH from .bundle/config" do
-      config "BUNDLE_PATH" => bundled_app("vendor/bundle").to_s
+    it "installs gems to BUNDLE_PATH from .fundle/config" do
+      config "BUNDLE_PATH" => fundled_app("vendor/fundle").to_s
 
-      bundle :install
+      fundle :install
 
       vendored_gems('gems/rack-1.0.0').should be_directory
       should_be_installed "rack 1.0.0"
     end
 
-    it "sets BUNDLE_PATH as the first argument to bundle install" do
-      bundle "install --path ./vendor/bundle"
+    it "sets BUNDLE_PATH as the first argument to fundle install" do
+      fundle "install --path ./vendor/fundle"
 
       vendored_gems('gems/rack-1.0.0').should be_directory
       should_be_installed "rack 1.0.0"
@@ -404,7 +404,7 @@ describe "bundle install with gem sources" do
     it "disables system gems when passing a path to install" do
       # This is so that vendored gems can be distributed to others
       build_gem "rack", "1.1.0", :to_system => true
-      bundle "install --path ./vendor/bundle"
+      fundle "install --path ./vendor/fundle"
 
       vendored_gems('gems/rack-1.0.0').should be_directory
       should_be_installed "rack 1.0.0"
@@ -413,12 +413,12 @@ describe "bundle install with gem sources" do
 
   describe "when passing in a Gemfile via --gemfile" do
     it "finds the gemfile" do
-      gemfile bundled_app("NotGemfile"), <<-G
+      gemfile fundled_app("NotGemfile"), <<-G
         source "file://#{gem_repo1}"
         gem 'rack'
       G
 
-      bundle :install, :gemfile => bundled_app("NotGemfile")
+      fundle :install, :gemfile => fundled_app("NotGemfile")
 
       ENV['BUNDLE_GEMFILE'] = "NotGemfile"
       should_be_installed "rack 1.0.0"
@@ -432,7 +432,7 @@ describe "bundle install with gem sources" do
         gem 'rack'
       G
 
-      bundle :install, :quiet => true
+      fundle :install, :quiet => true
       out.should == ""
     end
 
@@ -441,7 +441,7 @@ describe "bundle install with gem sources" do
         gem 'rack'
       G
 
-      bundle :install, :quiet => true
+      fundle :install, :quiet => true
       out.should =~ /doesn't have any sources/
     end
   end
@@ -458,46 +458,46 @@ describe "bundle install with gem sources" do
       G
     end
 
-    it "behaves like bundle install vendor/bundle with --deployment" do
-      bundle "install"
-      bundle "install --deployment"
-      out.should include("It was installed into ./vendor/bundle")
+    it "behaves like fundle install vendor/fundle with --deployment" do
+      fundle "install"
+      fundle "install --deployment"
+      out.should include("It was installed into ./vendor/fundle")
       should_be_installed "rack 1.0.0"
-      bundled_app("vendor/bundle").should exist
+      fundled_app("vendor/fundle").should exist
     end
 
     it "prints a warning if you try to use --disable-shared-gems" do
-      bundle "install --path vendor --disable-shared-gems"
+      fundle "install --path vendor --disable-shared-gems"
       out.should include "The disable-shared-gem option is no longer available"
     end
 
-    ["install vendor/bundle", "install --path vendor/bundle"].each do |install|
-      if install == "install vendor/bundle"
+    ["install vendor/fundle", "install --path vendor/fundle"].each do |install|
+      if install == "install vendor/fundle"
         it "displays the deprecation warning for path as an argument to install" do
-          bundle install
-          out.should include("The path argument to `bundle install` is deprecated.")
+          fundle install
+          out.should include("The path argument to `fundle install` is deprecated.")
         end
       end
 
-      it "does not use available system gems with bundle #{install}" do
-        bundle install
+      it "does not use available system gems with fundle #{install}" do
+        fundle install
         should_be_installed "rack 1.0.0"
       end
 
-      it "prints a warning to let the user know what has happened with bundle #{install}" do
-        bundle install
+      it "prints a warning to let the user know what has happened with fundle #{install}" do
+        fundle install
         out.should include("It was installed into ./vendor")
       end
 
       it "disallows #{install} --system" do
-        bundle "#{install} --system"
+        fundle "#{install} --system"
         out.should include("Please choose.")
       end
 
-      it "remembers to disable system gems after the first time with bundle #{install}" do
-        bundle install
-        FileUtils.rm_rf bundled_app('vendor')
-        bundle "install"
+      it "remembers to disable system gems after the first time with fundle #{install}" do
+        fundle install
+        FileUtils.rm_rf fundled_app('vendor')
+        fundle "install"
 
         vendored_gems('gems/rack-1.0.0').should be_directory
         should_be_installed "rack 1.0.0"
@@ -542,7 +542,7 @@ describe "bundle install with gem sources" do
         source "file://#{gem_repo2}"
         gem "yaml_spec"
       G
-      bundle :install
+      fundle :install
       err.should be_empty
     end
   end
@@ -571,7 +571,7 @@ describe "bundle install with gem sources" do
         source "http://localgemserver.com/"
         gem "rcov"
       G
-      bundle :install
+      fundle :install
       should_be_installed "rcov 1.0.0"
     end
   end
@@ -641,7 +641,7 @@ describe "bundle install with gem sources" do
       should_be_installed "multiple_versioned_deps 1.0.0"
     end
 
-    it "includes fundler in the bundle when it's a child dependency" do
+    it "includes fundler in the fundle when it's a child dependency" do
       install_gemfile <<-G
         source "file://#{gem_repo2}"
         gem "rails", "3.0"
@@ -709,7 +709,7 @@ describe "bundle install with gem sources" do
       simulate_fundler_version "10.0.0"
       #simulate_new_machine
 
-      bundle "check"
+      fundle "check"
       out.should == "The Gemfile's dependencies are satisfied"
     end
   end
@@ -734,7 +734,7 @@ describe "bundle install with gem sources" do
       should_not_be_installed "rack_middleware 1.0"
       simulate_new_machine
 
-      bundle :install
+      fundle :install
 
       should_be_installed "rack 0.9.1"
       should_be_installed "rack_middleware 1.0"
@@ -742,7 +742,7 @@ describe "bundle install with gem sources" do
 
     it "does not hit the remote a second time" do
       FileUtils.rm_rf gem_repo2
-      bundle "install --without rack"
+      fundle "install --without rack"
       err.should be_empty
     end
   end

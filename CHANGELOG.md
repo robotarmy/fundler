@@ -56,7 +56,7 @@ Features:
 Bugfixes:
 
   - Use bitwise or in #hash to reduce the chance of overflow
-  - `bundle update` now works with :git + :tag updates
+  - `fundle update` now works with :git + :tag updates
   - Record relative :path options in the Gemfile.lock
   - :groups option on gem method in Gemfile now works
   - Add #platform method and :platform option to Gemfile DSL
@@ -78,12 +78,12 @@ Bugfix:
 Features:
 
   - Vlad deployment recipe, `require 'fundler/vlad'`
-  - Prettier bundle graphs
-  - Improved gem skeleton for `bundle gem`
+  - Prettier fundle graphs
+  - Improved gem skeleton for `fundle gem`
   - Prompt on file clashes when generating a gem
   - Option to generate binary with gem skeleton
   - Allow subclassing of GemHelper for custom tasks
-  - Chdir to gem directory during `bundle open`
+  - Chdir to gem directory during `fundle open`
 
 Bugfixes:
 
@@ -99,7 +99,7 @@ Bugfixes:
 
 Features:
 
-  - You can now define `:bundle_cmd` in the capistrano task
+  - You can now define `:fundle_cmd` in the capistrano task
 
 Bugfixes:
 
@@ -130,7 +130,7 @@ Bugfixes:
   - Fix the capistrano task so that it actually runs
   - Update the Gemfile template to reference rubygems.org instead
     of :gemcutter
-  - bundle exec should exit with a non zero exit code when the gem
+  - fundle exec should exit with a non zero exit code when the gem
     binary does not exist or the file is not executable.
   - Expand paths in Gemfile relative to the Gemfile and not the current
     working directory.
@@ -150,7 +150,7 @@ Bugfixes:
 
 Features:
 
-  - `bundle gem NAME` command to generate a new gem with Gemfile
+  - `fundle gem NAME` command to generate a new gem with Gemfile
   - Bundle config file location can be specified by BUNDLE_APP_CONFIG
   - Add --frozen to disable updating the Gemfile.lock at runtime
     (default with --deployment)
@@ -159,9 +159,9 @@ Features:
 Bugfixes:
 
   - Multiple fundler process no longer share a tmp directory
-  - `bundle update GEM` always updates dependencies of GEM as well
+  - `fundle update GEM` always updates dependencies of GEM as well
   - Deleting the cache directory no longer causes errors
-  - Moving the bundle after installation no longer causes git errors
+  - Moving the fundle after installation no longer causes git errors
   - Bundle path is now correctly remembered on a read-only filesystem
   - Gem binaries are installed to Gem.bindir, not #{Gem.dir}/bin
   - Fetch gems from vendor/cache, even without --local
@@ -173,9 +173,9 @@ Features:
 
   - Deprecate --production flag for --deployment, since the former
     was causing confusion with the :production group
-  - Add --gemfile option to `bundle check`
-  - Reduce memory usage of `bundle install` by 2-4x
-  - Improve message from `bundle check` under various conditions
+  - Add --gemfile option to `fundle check`
+  - Reduce memory usage of `fundle install` by 2-4x
+  - Improve message from `fundle check` under various conditions
   - Better error when a changed Gemfile conflicts with Gemfile.lock
 
 Bugfixes:
@@ -187,20 +187,20 @@ Bugfixes:
 
 ## 1.0.0.rc.2 (July 29, 2010)
 
-  - `bundle install path` was causing confusion, so we now print
+  - `fundle install path` was causing confusion, so we now print
     a clarifying warning. The preferred way to install to a path
     (which will not print the warning) is
-    `bundle install --path path/to/install`.
-  - `bundle install --system` installs to the default system
+    `fundle install --path path/to/install`.
+  - `fundle install --system` installs to the default system
     location ($BUNDLE_PATH or $GEM_HOME) even if you previously
-    used `bundle install --path`
+    used `fundle install --path`
   - completely remove `--disable-shared-gems`. If you install to
     system, you will not be isolated, while if you install to
     another path, you will be isolated from gems installed to
     the system. This was mostly an internal option whose naming
     and semantics were extremely confusing.
-  - Add a `--production` option to `bundle install`:
-    - by default, installs to `vendor/bundle`. This can be
+  - Add a `--production` option to `fundle install`:
+    - by default, installs to `vendor/fundle`. This can be
       overridden with the `--path` option
     - uses `--local` if `vendor/cache` is found. This will
       guarantee that Fundler does not attempt to connect to
@@ -211,13 +211,13 @@ Bugfixes:
       but do not check in an updated Gemfile.lock
   - Fixes a bug where switching a source from Rubygems to git
     would always say "the git source is not checked out" when
-    running `bundle install`
+    running `fundle install`
 
 NOTE: We received several reports of "the git source has not
-been checked out. Please run bundle install". As far as we
+been checked out. Please run fundle install". As far as we
 can tell, these problems have two possible causes:
 
-1. `bundle install ~/.bundle` in one user, but actually running
+1. `fundle install ~/.fundle` in one user, but actually running
    the application as another user. Never install gems to a
    directory scoped to a user (`~` or `$HOME`) in deployment.
 2. A bug that happened when changing a gem to a git source.
@@ -228,35 +228,35 @@ the best practices we have been encouraging people to use
 for deployment.
 
 If you want to share gems across deployments, and you use
-Capistrano, symlink release_path/current/vendor/bundle to
-release_path/shared/bundle. This will keep deployments
+Capistrano, symlink release_path/current/vendor/fundle to
+release_path/shared/fundle. This will keep deployments
 snappy while maintaining the benefits of clean, deploy-time
 isolation.
 
 ## 1.0.0.rc.1 (July 26, 2010)
 
-  - Fixed a bug with `bundle install` on multiple machines and git
+  - Fixed a bug with `fundle install` on multiple machines and git
 
 ## 1.0.0.beta.10 (July 25, 2010)
 
   - Last release before 1.0.0.rc.1
   - Added :mri as a valid platform (platforms :mri { gem "ruby-debug" })
-  - Fix `bundle install` immediately after modifying the :submodule option
+  - Fix `fundle install` immediately after modifying the :submodule option
   - Don't write to Gemfile.lock if nothing has changed, fixing situations
-    where bundle install was run with a different user than the app
+    where fundle install was run with a different user than the app
     itself
-  - Fix a bug where other platforms were being wiped on `bundle update`
-  - Don't ask for root password on `bundle install` if not needed
+  - Fix a bug where other platforms were being wiped on `fundle update`
+  - Don't ask for root password on `fundle install` if not needed
   - Avoid setting `$GEM_HOME` where not needed
-  - First solid pass of `bundle config`
+  - First solid pass of `fundle config`
   - Add build options
-    - `bundle config build.mysql --with-mysql-config=/path/to/config`
+    - `fundle config build.mysql --with-mysql-config=/path/to/config`
 
 ## 1.0.0.beta.9 (July 21, 2010)
 
   - Fix install failure when switching from a path to git source
-  - Fix `bundle exec bundle *` in a bundle with --disable-shared-gems
-  - Fix `bundle *` from inside a bundle with --disable-shared-gem
+  - Fix `fundle exec fundle *` in a fundle with --disable-shared-gems
+  - Fix `fundle *` from inside a fundle with --disable-shared-gem
   - Shim Gem.refresh. This is used by Unicorn
   - Fix install failure when a path's dependencies changed
 
@@ -266,20 +266,20 @@ isolation.
 
 ## 1.0.0.beta.7 (July 20, 2010, yanked)
 
-  - Running `bundle install` twice in a row with a git source always crashed
+  - Running `fundle install` twice in a row with a git source always crashed
 
 ## 1.0.0.beta.6 (July 20, 2010, yanked)
 
-  - Create executables with bundle install --binstubs
+  - Create executables with fundle install --binstubs
   - You can customize the location (default is app/bin) with --binstubs other/location
   - Fix a bug where the Gemfile.lock would be deleted even if the update was exited
   - Fix a bug where cached gems for other platforms were sometimes deleted
   - Clean up output when nothing was deleted from cache (it previously said
     "Removing outdated gems ...")
-  - Improve performance of bundle install if the git gem was already checked out,
+  - Improve performance of fundle install if the git gem was already checked out,
     and the revision being used already exists locally
-  - Fix bundle show fundler in some cases
-  - Fix bugs with bundle update
+  - Fix fundle show fundler in some cases
+  - Fix bugs with fundle update
   - Don't ever run git commands at runtime (fixes a number of common passenger issues)
   - Fixes an obscure bug where switching the source of a gem could fail to correctly
     change the source of its dependencies
@@ -294,9 +294,9 @@ isolation.
 
 ## 1.0.0.beta.1
 
-  - No `bundle lock` command. Locking happens automatically on install or update
-  - No .bundle/environment.rb. Require 'fundler/setup' instead.
-  - $BUNDLE_HOME defaults to $GEM_HOME instead of ~/.bundle
+  - No `fundle lock` command. Locking happens automatically on install or update
+  - No .fundle/environment.rb. Require 'fundler/setup' instead.
+  - $BUNDLE_HOME defaults to $GEM_HOME instead of ~/.fundle
   - Remove lockfiles generated by 0.9
 
 ## 0.9.26
@@ -317,7 +317,7 @@ Bugfixes:
 Features:
 
   - fetch submodules for git sources
-  - limit the bundled version of fundler to the same as the one installing
+  - limit the fundled version of fundler to the same as the one installing
   - force relative paths in git gemspecs to avoid raising Gem::NameTooLong
   - serialize GemCache sources correctly, so locking works
   - raise Fundler::GemNotFound instead of calling exit! inside library code
@@ -329,7 +329,7 @@ Bugfixes:
   - prune outdated gems with the platform "ruby"
   - prune cache without errors when there are directories or non-gem files
   - don't re-write environment.rb if running after it has been loaded
-  - do not monkeypatch Specification#load_paths twice when inside a bundle
+  - do not monkeypatch Specification#load_paths twice when inside a fundle
 
 ## 0.9.23 (April 20, 2010)
 
@@ -373,14 +373,14 @@ Features:
 
 Bugfixes:
 
-  - fix infinite recursion in Fundler.setup after loading a bundled Fundler gem
+  - fix infinite recursion in Fundler.setup after loading a fundled Fundler gem
   - request install instead of lock when env.rb is out of sync with Gemfile.lock
 
 ## 0.9.19 (April 12, 2010)
 
 Features:
 
-  - suggest `bundle install --relock` when the Gemfile has changed (#272)
+  - suggest `fundle install --relock` when the Gemfile has changed (#272)
   - source support for Rubygems servers without prerelease gem indexes (#262)
 
 Bugfixes:
@@ -394,7 +394,7 @@ Bugfixes:
 
 Features:
 
-  - console command that runs irb with bundle (and optional group) already loaded
+  - console command that runs irb with fundle (and optional group) already loaded
 
 Bugfixes:
 
@@ -439,9 +439,9 @@ Features:
 
   - use the env_file if possible instead of doing a runtime resolve
      - huge speedup when calling Fundler.setup while locked
-     - ensures bundle exec is fast while locked
+     - ensures fundle exec is fast while locked
      - regenerates env_file if it was generated by an older version
-  - update cached/packed gems when you update gems via bundle install
+  - update cached/packed gems when you update gems via fundle install
 
 Bugfixes:
 
@@ -516,7 +516,7 @@ Bugfixes:
   - normalize parameters to Fundler.require (#153)
   - check now checks installed gems rather than cached gems (#162)
   - don't update the gem index when installing after locking (#169)
-  - bundle parenthesises arguments for 1.8.6 (#179)
+  - fundle parenthesises arguments for 1.8.6 (#179)
   - gems can now be assigned to multiple groups without problems (#135)
   - fix the warning when building extensions for a gem from git with Rubygems 1.3.6
   - fix a Dependency.to_yaml error due to accidentally including sources and groups
@@ -530,7 +530,7 @@ Bugfixes:
 Bugfixes:
 
   - support locking after install --without
-  - don't reinstall gems from the cache if they're already in the bundle
+  - don't reinstall gems from the cache if they're already in the fundle
   - fixes for Ruby 1.8.7 and 1.9
 
 ## 0.9.9 (February 25, 2010)
@@ -578,7 +578,7 @@ Bugfixes:
 
   - set SourceIndex#spec_dirs to solve a problem involving Rails 2.3 in unlocked mode
   - ensure Rubygems is fully loaded in Ruby 1.9 before patching it
-  - fix `bundle install` for a locked app without a .bundle directory
+  - fix `fundle install` for a locked app without a .fundle directory
   - require gems in the order that the resolver determines
   - make the tests platform agnostic so we can confirm that they're green on JRuby
   - fixes for Ruby 1.9
@@ -589,12 +589,12 @@ Features:
 
   - added support for :path => "relative/path"
   - added support for older versions of git
-  - added `bundle install --disable-shared-gems`
+  - added `fundle install --disable-shared-gems`
   - Fundler.require fails silently if a library does not have a file on the load path with its name
-  - Basic support for multiple rubies by namespacing the default bundle path using the version and engine
+  - Basic support for multiple rubies by namespacing the default fundle path using the version and engine
 
 Bugfixes:
 
-  - if the bundle is locked and .bundle/environment.rb is not present when Fundler.setup is called, generate it
-  - same if it's not present with `bundle check`
-  - same if it's not present with `bundle install`
+  - if the fundle is locked and .fundle/environment.rb is not present when Fundler.setup is called, generate it
+  - same if it's not present with `fundle check`
+  - same if it's not present with `fundle install`

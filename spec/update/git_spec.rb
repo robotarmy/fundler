@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle update" do
+describe "fundle update" do
   describe "git sources" do
     it "floats on a branch when :branch is used" do
       build_git  "foo", "1.0"
@@ -16,7 +16,7 @@ describe "bundle update" do
         s.write "lib/foo.rb", "FOO = '1.1'"
       end
 
-      bundle "update"
+      fundle "update"
 
       should_be_installed "foo 1.1"
     end
@@ -31,7 +31,7 @@ describe "bundle update" do
         gem "rails", :git => "#{lib_path('rails')}"
       G
 
-      bundle "update rails"
+      fundle "update rails"
       out.should include("Using activesupport (3.0) from #{lib_path('rails')} (at master)")
       should_be_installed "rails 3.0", "activesupport 3.0"
     end
@@ -50,7 +50,7 @@ describe "bundle update" do
         s.write "lib/foo.rb", "FOO = '1.1'"
       end
 
-      bundle "update --source foo"
+      fundle "update --source foo"
 
       should_be_installed "foo 1.1"
     end
@@ -70,7 +70,7 @@ describe "bundle update" do
         s.write "lib/foo.rb", "FOO = '1.1'"
       end
 
-      bundle "update foo"
+      fundle "update foo"
 
       should_be_installed "foo 1.1"
     end
@@ -91,7 +91,7 @@ describe "bundle update" do
 
       err.should be_empty
       out.should include("Fetching #{lib_path}/foo_two")
-      out.should include("Your bundle is complete!")
+      out.should include("Your fundle is complete!")
     end
 
 
@@ -113,7 +113,7 @@ describe "bundle update" do
         gem 'foo', :git => "#{@remote.path}", :tag => "fubar"
       G
 
-      bundle "update", :exitstatus => true
+      fundle "update", :exitstatus => true
       exitstatus.should == 0
     end
 
@@ -188,7 +188,7 @@ describe "bundle update" do
 
       lib_path("foo-1.0").join(".git").rmtree
 
-      bundle :update, :expect_err => true
+      fundle :update, :expect_err => true
       out.should include(lib_path("foo-1.0").to_s)
     end
 

@@ -92,15 +92,15 @@ describe "Fundler.require" do
     out.should == 'no such file to load -- fail'
   end
 
-  describe "using bundle exec" do
+  describe "using fundle exec" do
     it "requires the locked gems" do
-      bundle "exec ruby -e 'Fundler.require'"
+      fundle "exec ruby -e 'Fundler.require'"
       check out.should == "two"
 
-      bundle "exec ruby -e 'Fundler.require(:bar)'"
+      fundle "exec ruby -e 'Fundler.require(:bar)'"
       check out.should == "baz\nqux"
 
-      bundle "exec ruby -e 'Fundler.require(:default, :bar)'"
+      fundle "exec ruby -e 'Fundler.require(:default, :bar)'"
       out.should == "baz\nqux\ntwo"
     end
   end

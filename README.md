@@ -1,10 +1,10 @@
-# Fundler: a gem to bundle gems
+# Fundler: a gem to fundle gems
 
 Fundler is a tool that manages gem dependencies for your ruby application. It
 takes a gem manifest file and is able to fetch, download, and install the gems
 and all child dependencies specified in this manifest. It can manage any update
-to the gem manifest file and update the bundle's gems accordingly. It also lets
-you run any ruby code in context of the bundle's gem environment.
+to the gem manifest file and update the fundle's gems accordingly. It also lets
+you run any ruby code in context of the fundle's gem environment.
 
 ### Installation and usage
 

@@ -3,10 +3,10 @@ BUNDLE(1)							     BUNDLE(1)
 
 
 NAME
-       bundle - Ruby Dependency Management
+       fundle - Ruby Dependency Management
 
 SYNOPSIS
-       bundle COMMAND [--no-color] [--verbose] [ARGS]
+       fundle COMMAND [--no-color] [--verbose] [ARGS]
 
 DESCRIPTION
        Fundler	manages  an application's dependencies through its entire life
@@ -24,59 +24,59 @@ OPTIONS
 	      Prints out additional logging information
 
 BUNDLE COMMANDS
-       We divide bundle subcommands into primary commands and utilities.
+       We divide fundle subcommands into primary commands and utilities.
 
 PRIMARY COMMANDS
-       bundle install(1) bundle-install.1.html
+       fundle install(1) fundle-install.1.html
 	      Install the gems specified by the Gemfile or Gemfile.lock
 
-       bundle update(1) bundle-update.1.html
+       fundle update(1) fundle-update.1.html
 	      Update dependencies to their latest versions
 
-       bundle package(1) bundle-package.1.html
+       fundle package(1) fundle-package.1.html
 	      Package the .gem files required by  your	application  into  the
 	      vendor/cache directory
 
-       bundle exec(1) bundle-exec.1.html
-	      Execute a script in the context of the current bundle
+       fundle exec(1) fundle-exec.1.html
+	      Execute a script in the context of the current fundle
 
-       bundle config(1) bundle-config.1.html
+       fundle config(1) fundle-config.1.html
 	      Specify and read configuration options for fundler
 
 UTILITIES
-       bundle check(1)
+       fundle check(1)
 	      Determine  whether  the  requirements  for  your application are
 	      installed and available to fundler
 
-       bundle list(1)
-	      Show all of the gems in the current bundle
+       fundle list(1)
+	      Show all of the gems in the current fundle
 
-       bundle show(1)
-	      Show the source location of a particular gem in the bundle
+       fundle show(1)
+	      Show the source location of a particular gem in the fundle
 
-       bundle console(1)
-	      Start an IRB session in the context of the current bundle
+       fundle console(1)
+	      Start an IRB session in the context of the current fundle
 
-       bundle open(1)
+       fundle open(1)
 	      Open an installed gem in the editor
 
-       bundle viz(1)
+       fundle viz(1)
 	      Generate a visual representation of your dependencies
 
-       bundle init(1)
+       fundle init(1)
 	      Generate a simple Gemfile, placed in the current directory
 
-       bundle gem(1)
+       fundle gem(1)
 	      Create a simple gem, suitable for development with fundler
 
 OBSOLETE
        These commands are obsolete and should no longer be used
 
-       o   bundle lock(1)
+       o   fundle lock(1)
 
-       o   bundle unlock(1)
+       o   fundle unlock(1)
 
-       o   bundle cache(1)
+       o   fundle cache(1)
 
 
 

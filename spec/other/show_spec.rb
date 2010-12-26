@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle show" do
+describe "fundle show" do
   before :each do
     install_gemfile <<-G
       source "file://#{gem_repo1}"
@@ -11,36 +11,36 @@ describe "bundle show" do
   it "creates a Gemfile.lock if one did not exist" do
     FileUtils.rm("Gemfile.lock")
 
-    bundle "show"
+    fundle "show"
 
-    bundled_app("Gemfile.lock").should exist
+    fundled_app("Gemfile.lock").should exist
   end
 
-  it "creates a Gemfile.lock if one did not exist and we're doing bundle show rails" do
+  it "creates a Gemfile.lock if one did not exist and we're doing fundle show rails" do
     FileUtils.rm("Gemfile.lock")
 
-    bundle "show rails"
+    fundle "show rails"
 
-    bundled_app("Gemfile.lock").should exist
+    fundled_app("Gemfile.lock").should exist
   end
 
-  it "prints path if gem exists in bundle" do
-    bundle "show rails"
-    out.should == default_bundle_path('gems', 'rails-2.3.2').to_s
+  it "prints path if gem exists in fundle" do
+    fundle "show rails"
+    out.should == default_fundle_path('gems', 'rails-2.3.2').to_s
   end
 
   it "prints the path to the running fundler" do
-    bundle "show fundler"
+    fundle "show fundler"
     out.should == File.expand_path('../../../', __FILE__)
   end
 
-  it "complains if gem not in bundle" do
-    bundle "show missing"
+  it "complains if gem not in fundle" do
+    fundle "show missing"
     out.should =~ /could not find gem 'missing'/i
   end
 end
 
-describe "bundle show with a git repo" do
+describe "fundle show with a git repo" do
   before :each do
     @git = build_git "foo", "1.0"
   end
@@ -51,7 +51,7 @@ describe "bundle show with a git repo" do
     G
     should_be_installed "foo 1.0"
 
-    bundle :show
+    fundle :show
     out.should include("foo (1.0 #{@git.ref_for('master', 6)}")
   end
 
@@ -66,7 +66,7 @@ describe "bundle show with a git repo" do
     G
     should_be_installed "foo 1.0.omg"
 
-    bundle :show
+    fundle :show
     out.should include("foo (1.0 #{@git.ref_for('omg', 6)}")
   end
 
@@ -76,7 +76,7 @@ describe "bundle show with a git repo" do
       gem "foo", :git => "#{lib_path('foo-1.0')}", :ref => "#{sha}"
     G
 
-    bundle :show
+    fundle :show
     out.should include("foo (1.0 #{sha[0..6]})")
   end
 end

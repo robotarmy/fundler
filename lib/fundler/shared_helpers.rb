@@ -26,7 +26,7 @@ module Fundler
       Pathname.new("#{default_gemfile}.lock")
     end
 
-    def in_bundle?
+    def in_fundle?
       find_gemfile
     end
 
@@ -96,7 +96,7 @@ module Fundler
         spec = specs.find  { |s| s.name == dep.name }
 
         if spec.nil?
-          e = Gem::LoadError.new "#{dep.name} is not part of the bundle. Add it to Gemfile."
+          e = Gem::LoadError.new "#{dep.name} is not part of the fundle. Add it to Gemfile."
           e.name = dep.name
           e.version_requirement = dep.requirement
           raise e
@@ -131,7 +131,7 @@ module Fundler
       gem_class.send(:define_method, :bin_path) do |name, *args|
         exec_name, *reqs = args
 
-        if exec_name == 'bundle'
+        if exec_name == 'fundle'
           return ENV['BUNDLE_BIN_PATH']
         end
 

@@ -1,13 +1,13 @@
 require "spec_helper"
 
-describe "bundle check" do
+describe "fundle check" do
   it "returns success when the Gemfile is satisfied" do
     install_gemfile <<-G
       source "file://#{gem_repo1}"
       gem "rails"
     G
 
-    bundle :check, :exitstatus => true
+    fundle :check, :exitstatus => true
     check @exitstatus.should == 0
     out.should == "The Gemfile's dependencies are satisfied"
   end
@@ -19,7 +19,7 @@ describe "bundle check" do
     G
 
     Dir.chdir tmp
-    bundle "check --gemfile bundled_app/Gemfile"
+    fundle "check --gemfile fundled_app/Gemfile"
     out.should == "The Gemfile's dependencies are satisfied"
   end
 
@@ -31,9 +31,9 @@ describe "bundle check" do
 
     FileUtils.rm("Gemfile.lock")
 
-    bundle "check"
+    fundle "check"
 
-    bundled_app("Gemfile.lock").should exist
+    fundled_app("Gemfile.lock").should exist
   end
 
   it "prints a generic error if the missing gems are unresolvable" do
@@ -44,7 +44,7 @@ describe "bundle check" do
       gem "rails"
     G
 
-    bundle :check
+    fundle :check
     out.should include("Your Gemfile's dependencies could not be satisfied")
   end
 
@@ -54,7 +54,7 @@ describe "bundle check" do
       gem "rails"
     G
 
-    bundle :check, :exitstatus => true
+    fundle :check, :exitstatus => true
     check @exitstatus.should > 0
     out.should include("could not be satisfied")
   end
@@ -75,7 +75,7 @@ describe "bundle check" do
       gem "rails_fail"
     G
 
-    bundle :check
+    fundle :check
     out.should include("Your Gemfile's dependencies could not be satisfied")
   end
 
@@ -87,8 +87,8 @@ describe "bundle check" do
       end
     G
 
-    bundle "install --without foo"
-    bundle "check", :exitstatus => true
+    fundle "install --without foo"
+    fundle "check", :exitstatus => true
     check @exitstatus.should == 0
     out.should include("The Gemfile's dependencies are satisfied")
   end
@@ -99,14 +99,14 @@ describe "bundle check" do
       gem "rack", :group => :foo
     G
 
-    bundle "install --without foo"
+    fundle "install --without foo"
 
     gemfile <<-G
       source "file://#{gem_repo1}"
       gem "rack"
     G
 
-    bundle "check", :exitstatus => true
+    fundle "check", :exitstatus => true
     out.should include("* rack (1.0.0)")
     @exitstatus.should == 1
   end
@@ -138,7 +138,7 @@ describe "bundle check" do
         activesupport
     G
 
-    bundle :check
+    fundle :check
     out.should == "The Gemfile's dependencies are satisfied"
   end
 
@@ -169,12 +169,12 @@ describe "bundle check" do
         activesupport
     G
 
-    bundle :check
+    fundle :check
     out.should == "The Gemfile's dependencies are satisfied"
   end
 
   it "outputs an error when the default Gemfile is not found" do
-    bundle :check, :exitstatus => true
+    fundle :check, :exitstatus => true
     check @exitstatus.should == 10
     out.should include("Could not locate Gemfile")
   end
@@ -186,10 +186,10 @@ describe "bundle check" do
     G
 
     simulate_new_machine
-    bundle "check"
+    fundle "check"
     last_out = out
     3.times do |i|
-      bundle :check
+      fundle :check
       check out.should == last_out
       err.should be_empty
     end
@@ -205,15 +205,15 @@ describe "bundle check" do
     end
 
     it "returns success when the Gemfile is satisfied" do
-      bundle :install
-      bundle :check, :exitstatus => true
+      fundle :install
+      fundle :check, :exitstatus => true
       check @exitstatus.should == 0
       out.should == "The Gemfile's dependencies are satisfied"
     end
 
     it "shows what is missing with the current Gemfile if it is not satisfied" do
       simulate_new_machine
-      bundle :check
+      fundle :check
       out.should match(/The following gems are missing/)
       out.should include("* rack (1.0")
     end

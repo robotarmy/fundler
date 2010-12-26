@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "bundle install across platforms" do
+describe "fundle install across platforms" do
   it "maintains the same lockfile if all gems are compatible across platforms" do
     lockfile <<-G
       GEM
@@ -82,7 +82,7 @@ describe "bundle install across platforms" do
     G
 
     simulate_platform "java"
-    bundle "install"
+    fundle "install"
 
     should_be_installed "nokogiri 1.4.2 JAVA", "weakling 0.0.3"
   end
@@ -94,7 +94,7 @@ describe "bundle install across platforms" do
       gem "rack", "1.0.0"
     G
 
-    bundle "install --path vendor/bundle"
+    fundle "install --path vendor/fundle"
 
     vendored_gems("gems/rack-1.0.0").should exist
   end
@@ -106,17 +106,17 @@ describe "bundle install across platforms" do
       gem "rack", "1.0.0"
     G
 
-    bundle "install --path vendor/bundle"
+    fundle "install --path vendor/fundle"
 
     new_version = Gem::ConfigMap[:ruby_version] == "1.8" ? "1.9.1" : "1.8"
-    FileUtils.mv(vendored_gems, bundled_app("vendor/bundle/#{Gem.ruby_engine}/#{new_version}"))
+    FileUtils.mv(vendored_gems, fundled_app("vendor/fundle/#{Gem.ruby_engine}/#{new_version}"))
 
-    bundle "install --path ./vendor/bundle"
+    fundle "install --path ./vendor/fundle"
     vendored_gems("gems/rack-1.0.0").should exist
   end
 end
 
-describe "bundle install with platform conditionals" do
+describe "fundle install with platform conditionals" do
   it "installs gems tagged w/ the current platforms" do
     install_gemfile <<-G
       source "file://#{gem_repo1}"
@@ -185,7 +185,7 @@ describe "bundle install with platform conditionals" do
       end
     G
 
-    bundle :show, :exitstatus => true
+    fundle :show, :exitstatus => true
     exitstatus.should == 0
   end
 

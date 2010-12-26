@@ -3,30 +3,30 @@ BUNDLE-CONFIG(1)					      BUNDLE-CONFIG(1)
 
 
 NAME
-       bundle-config - Set fundler configuration options
+       fundle-config - Set fundler configuration options
 
 SYNOPSIS
-       bundle config [name [value]]
+       fundle config [name [value]]
 
 DESCRIPTION
        This  command  allows you to interact with fundler's configuration sys-
        tem. Fundler retrieves its configuration  from  the  local  application
-       (app/.bundle/config), environment variables, and the user's home direc-
-       tory (~/.bundle/config), in that order of priority.
+       (app/.fundle/config), environment variables, and the user's home direc-
+       tory (~/.fundle/config), in that order of priority.
 
-       Executing bundle config with no parameters will print  a  list  of  all
-       fundler configuration for the current bundle, and where that configura-
+       Executing fundle config with no parameters will print  a  list  of  all
+       fundler configuration for the current fundle, and where that configura-
        tion was set.
 
-       Executing bundle config <name> will print the value of that  configura-
+       Executing fundle config <name> will print the value of that  configura-
        tion setting, and where it was set.
 
-       Executing  bundle  config <name> <value> will set that configuration to
-       the value specified for all bundles executed as the current  user.  The
-       configuration will be stored in ~/.bundle/config.
+       Executing  fundle  config <name> <value> will set that configuration to
+       the value specified for all fundles executed as the current  user.  The
+       configuration will be stored in ~/.fundle/config.
 
 BUILD OPTIONS
-       You  can use bundle config to give fundler the flags to pass to the gem
+       You  can use fundle config to give fundler the flags to pass to the gem
        installer every time fundler tries to install a particular gem.
 
        A very common example, the mysql gem, requires Snow  Leopard  users  to
@@ -44,7 +44,7 @@ BUILD OPTIONS
 
 
 
-	   bundle config build.mysql --with-mysql-config=/usr/local/mysql/bin/mysql_config
+	   fundle config build.mysql --with-mysql-config=/usr/local/mysql/bin/mysql_config
 
 
 
@@ -55,12 +55,12 @@ CONFIGURATION KEYS
        Configuration keys in fundler have two forms: the  canonical  form  and
        the environment variable form.
 
-       For  instance,  passing	the  --without	flag to bundle install(1) bun-
+       For  instance,  passing	the  --without	flag to fundle install(1) bun-
        dle-install.1.html prevents  Fundler  from  installing  certain	groups
        specified  in  the Gemfile(5). Fundler persists this value in app/.bun-
        dle/config so that calls to Fundler.setup do not try to find gems  from
        the  Gemfile that you didn't install. Additionally, subsequent calls to
-       bundle install(1) bundle-install.1.html remember this setting and  skip
+       fundle install(1) fundle-install.1.html remember this setting and  skip
        those groups.
 
        The  canonical  form of this configuration is "without". To convert the
@@ -70,7 +70,7 @@ CONFIGURATION KEYS
 
 LIST OF AVAILABLE KEYS
        The following is a list of all configuration keys  and  their  purpose.
-       You  can  learn	more  about  their operation in bundle install(1) bun-
+       You  can  learn	more  about  their operation in fundle install(1) bun-
        dle-install.1.html.
 
        path (BUNDLE_PATH)
@@ -86,7 +86,7 @@ LIST OF AVAILABLE KEYS
 	      install
 
        bin (BUNDLE_BIN)
-	      Install  executables  from  gems	in the bundle to the specified
+	      Install  executables  from  gems	in the fundle to the specified
 	      directory. Defaults to false.
 
        gemfile (BUNDLE_GEMFILE)
@@ -97,9 +97,9 @@ LIST OF AVAILABLE KEYS
 	      rent working directory until it finds a Gemfile.
 
        In general, you should set these settings per-application by using  the
-       applicable flag to the bundle install(1) bundle-install.1.html command.
+       applicable flag to the fundle install(1) fundle-install.1.html command.
 
-       You can set them globally either via environment  variables  or	bundle
+       You can set them globally either via environment  variables  or	fundle
        config,	whichever is preferable for your setup. If you use both, envi-
        ronment variables will take preference over global settings.
 

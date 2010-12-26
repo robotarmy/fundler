@@ -258,8 +258,8 @@ module Fundler
               version = base.first.version
               message = "You have requested:\n" \
                     "  #{current.name} #{current.requirement}\n\n" \
-                    "The bundle currently has #{current.name} locked at #{version}.\n" \
-                    "Try running `bundle update #{current.name}`"
+                    "The fundle currently has #{current.name} locked at #{version}.\n" \
+                    "Try running `fundle update #{current.name}`"
             elsif current.source
               name = current.name
               versions = @source_requirements[name][name].map { |s| s.version }
@@ -428,7 +428,7 @@ module Fundler
 
           o << gem_message(origin)
 
-          # If the bundle wants a newer fundler than the running fundler, explain
+          # If the fundle wants a newer fundler than the running fundler, explain
           if origin.name == "fundler" && newer_fundler_required
             o << "Your version of Fundler is older than the one requested by the Gemfile.\n"
             o << "Perhaps you need to update Fundler by running `gem install fundler`."
@@ -439,7 +439,7 @@ module Fundler
         else
 
           # if the gem cannot be found because of a version conflict between lockfile and gemfile,
-          # print a useful error that suggests running `bundle update`, which may fix things
+          # print a useful error that suggests running `fundle update`, which may fix things
           #
           # @base is a SpecSet of the gems in the lockfile
           # conflict is the name of the gem that could not be found
@@ -450,7 +450,7 @@ module Fundler
 
             o << "  In Gemfile:\n"
             o << gem_message(requirement)
-            o << "Running `bundle update` will rebuild your snapshot from scratch, using only\n"
+            o << "Running `fundle update` will rebuild your snapshot from scratch, using only\n"
             o << "the gems in your Gemfile, which may resolve the conflict.\n"
 
           # the rest of the time, the gem cannot be found because it does not exist in the known sources
